@@ -10,6 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoviesApp.Infrastructure.Context;
+
+using Microsoft.EntityFrameworkCore;
+using MoviesApp.API.Configuration;
+using Microsoft.OpenApi.Models;
 
 namespace MoviesApp.API
 {
@@ -26,6 +31,23 @@ namespace MoviesApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddDbContext<MoviesDatabaseContext>(options =>
+            {
+                 options.UseSqlite(@"DataSource = C:\Temp\Movies_Db");
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Title = "MoviesApp API",
+                    Version = "v1"
+                });
+            });
+
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +57,12 @@ namespace MoviesApp.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
             app.UseHttpsRedirection();
 
