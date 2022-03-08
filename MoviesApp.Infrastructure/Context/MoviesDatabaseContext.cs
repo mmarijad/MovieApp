@@ -2,18 +2,20 @@
 using MoviesApp.Domain.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Text;
 using System.Linq;
 
 namespace MoviesApp.Infrastructure.Context
 {
-    public class MoviesDatabaseContext : DbContext
+    public class MoviesDatabaseContext : IdentityDbContext<User>
     {
         public MoviesDatabaseContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Director> Directors { get; set; }
+        public override DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

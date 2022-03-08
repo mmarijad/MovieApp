@@ -2,6 +2,7 @@
 using MoviesApp.API.DTOs.Category;
 using MoviesApp.API.DTOs.Director;
 using MoviesApp.API.DTOs.Movie;
+using MoviesApp.API.DTOs.User;
 using MoviesApp.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace MoviesApp.API.Configuration
             CreateMap<Director, DirectorAddDto>().ReverseMap();
             CreateMap<Director, DirectorUpdateDto>().ReverseMap();
             CreateMap<Director, DirectorResultDto>().ReverseMap();
+
+            CreateMap<User, UserRegistrationDto>().ReverseMap();
         }
     }
 }

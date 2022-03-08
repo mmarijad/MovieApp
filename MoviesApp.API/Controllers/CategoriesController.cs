@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MoviesApp.API.DTOs.Category;
 using MoviesApp.Domain.Interfaces;
 using MoviesApp.Domain.Models;
@@ -16,65 +17,98 @@ namespace MoviesApp.API.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(IMapper mapper, ICategoryService categoryService)
+        public CategoriesController(IMapper mapper, ICategoryService categoryService, ILogger<CategoriesController> logger)
         {
             _mapper = mapper;
             _categoryService = categoryService;
+            _logger = logger;
         }
-
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _categoryService.GetAll();
-
-            return Ok(_mapper.Map<IEnumerable<CategoryResultDto>>(categories));
+            try
+            {
+                var categories = await _categoryService.GetAll();
+                _logger.LogInformation("Get all categories succeeded.");
+                return Ok(_mapper.Map<IEnumerable<CategoryResultDto>>(categories));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
-
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = await _categoryService.GetById(id);
+            try
+            {
+                var category = await _categoryService.GetById(id);
+                if (category == null)
+                    return NotFound();
+                _logger.LogInformation("Get category by id: {0} succeeded.", id);
+                return Ok(_mapper.Map<CategoryResultDto>(category));
 
-            if (category == null) return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}.", ex.Message, ex.HResult);
+                return NotFound();
+            }
 
-            return Ok(_mapper.Map<CategoryResultDto>(category));
         }
-
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(CategoryAddDto categoryDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
 
-            var category = _mapper.Map<Category>(categoryDto);
-            var categoryResult = await _categoryService.Add(category);
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest();
 
-            if (categoryResult == null) return BadRequest();
+                var category = _mapper.Map<Category>(categoryDto);
+                var categoryResult = await _categoryService.Add(category);
 
-            return Ok(_mapper.Map<CategoryResultDto>(categoryResult));
+                if (categoryResult == null) return BadRequest();
+                _logger.LogInformation("Add category succeeded.");
+                return Ok(_mapper.Map<CategoryResultDto>(categoryResult));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
-
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(int id, CategoryUpdateDto categoryDto)
         {
-            if (id != categoryDto.Id) return BadRequest();
+            try
+            {
+                if (id != categoryDto.Id) return BadRequest();
+                if (!ModelState.IsValid) return BadRequest();
 
-            if (!ModelState.IsValid) return BadRequest();
-
-            await _categoryService.Update(_mapper.Map<Category>(categoryDto));
-
-            return Ok(categoryDto);
+                await _categoryService.Update(_mapper.Map<Category>(categoryDto));
+                _logger.LogInformation("Update category with id: {0} succeeded.", id);
+                return Ok(categoryDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
 
 
@@ -83,16 +117,22 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Remove(int id)
         {
-            var category = await _categoryService.GetById(id);
-            if (category == null) return NotFound();
+            try
+            {
+                var category = await _categoryService.GetById(id);
+                if (category == null) return NotFound();
 
-            var result = await _categoryService.Remove(category);
-
-            if (!result) return BadRequest();
-
-            return Ok();
+                var result = await _categoryService.Remove(category);
+                if (!result) return BadRequest();
+                _logger.LogInformation("Delete category with id: {0} succeeded.", id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
-
 
         [HttpGet]
         [Route("search/{category}")]
@@ -100,12 +140,18 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<Category>>> Search(string category)
         {
-            var categories = _mapper.Map<List<Category>>(await _categoryService.Search(category));
-
-            if (categories == null || categories.Count == 0)
-                return NotFound("Kategorija nije pronađena.");
-
-            return Ok(categories);
+            try
+            {
+                var categories = _mapper.Map<List<Category>>(await _categoryService.Search(category));
+                if (categories == null || categories.Count == 0) return NotFound("Kategorija nije pronađena.");
+                _logger.LogInformation("Search categories succeeded.");
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
     }
 }

@@ -1,0 +1,14 @@
+<form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && register()" autocomplete="off">
+    <h2 class="text-center text-primary">Sign Up</h2>
+    <hr>
+    
+    <app-form-input [formControl]='registerForm.controls["username"]' [label]='"Username"'></app-form-input>
+    <app-form-input [formControl]='registerForm.controls["firstName"]' [label]='"First Name"'></app-form-input>
+    <app-form-input [formControl]='registerForm.controls["lastName"]' [label]='"Last Name"'></app-form-input>
+    <app-form-input [formControl]='registerForm.controls["password"]' [label]='"Password"' [type]='"password"'></app-form-input>
+    <app-form-input [formControl]='registerForm.controls["confirmPassword"]' [label]='"Confirm Password"' [type]='"password"'></app-form-input>
+
+    <div class="form-group text-center">
+        <button [disabled]='!registerForm.valid' class="btn btn-success mr-2" type="submit">Register</button>
+    </div>
+</form>

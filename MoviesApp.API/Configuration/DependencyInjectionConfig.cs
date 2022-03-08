@@ -19,10 +19,12 @@ namespace MoviesApp.API.Configuration
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IMoviesRepository, MoviesRepository>();
             services.AddScoped<IDirectorRepository, DirectorRepository>();
+            services.AddScoped<IUserRepository, UserRepository > ();
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IMoviesService, MoviesService>();
             services.AddScoped<IDirectorService, DirectorService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MoviesApp.API.DTOs.Director;
 using MoviesApp.Domain.Interfaces;
 using MoviesApp.Domain.Models;
@@ -16,20 +17,31 @@ namespace MoviesApp.API.Controllers
     {
         private readonly IDirectorService _directorService;
         private readonly IMapper _mapper;
+        private readonly ILogger<DirectorsController> _logger;
 
-        public DirectorsController(IMapper mapper, IDirectorService directorService)
+        public DirectorsController(IMapper mapper, IDirectorService directorService, ILogger<DirectorsController> logger)
         {
             _mapper = mapper;
             _directorService = directorService;
+            _logger = logger;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var directors = await _directorService.GetAll();
+            try
+            {
+                var directors = await _directorService.GetAll();
+                _logger.LogInformation("Get all directors succeded.");
+                return Ok(_mapper.Map<IEnumerable<DirectorResultDto>>(directors));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
 
-            return Ok(_mapper.Map<IEnumerable<DirectorResultDto>>(directors));
         }
 
         [HttpGet("{id:int}")]
@@ -37,12 +49,19 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            var director = await _directorService.GetById(id);
+            try
+            {
+                var director = await _directorService.GetById(id);
+                if (director == null) return NotFound();
+                _logger.LogInformation("Get director by id: {0} succeded.", id);
+                return Ok(_mapper.Map<DirectorResultDto>(director));
+            }
 
-            if (director == null) 
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
                 return NotFound();
-
-            return Ok(_mapper.Map<DirectorResultDto>(director));
+            }
         }
 
 
@@ -51,14 +70,22 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(DirectorAddDto directorDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest();
+                var director = _mapper.Map<Director>(directorDto);
+                var directorResult = await _directorService.Add(director);
+                if (directorResult == null) return BadRequest();
 
-            var director = _mapper.Map<Director>(directorDto);
-            var directorResult = await _directorService.Add(director);
+                _logger.LogInformation("Add director succeded.");
+                return Ok(_mapper.Map<DirectorResultDto>(directorResult));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
 
-            if (directorResult == null) return BadRequest();
-
-            return Ok(_mapper.Map<DirectorResultDto>(directorResult));
         }
 
         [HttpPut("{id:int}")]
@@ -66,15 +93,21 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(int id, DirectorUpdateDto directorDto)
         {
-            if (id != directorDto.Id) 
-                return BadRequest();
+            try
+            {
+                if (id != directorDto.Id) return BadRequest();
+                if (!ModelState.IsValid) return BadRequest();
 
-            if (!ModelState.IsValid) 
-                return BadRequest();
+                await _directorService.Update(_mapper.Map<Director>(directorDto));
+                _logger.LogInformation("Update director with id: {0} succeded.", id);
+                return Ok(directorDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
 
-            await _directorService.Update(_mapper.Map<Director>(directorDto));
-
-            return Ok(directorDto);
         }
 
         [HttpDelete("{id:int}")]
@@ -82,15 +115,21 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Remove(int id)
         {
-            var director = await _directorService.GetById(id);
-            if (director == null) 
+            try
+            {
+                var director = await _directorService.GetById(id);
+                if (director == null) return NotFound();
+                var result = await _directorService.Remove(director);
+                if (!result) return BadRequest();
+
+                _logger.LogInformation("Delete director with id: {0} succeded.", id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
                 return NotFound();
-
-            var result = await _directorService.Remove(director);
-
-            if (!result) 
-                return BadRequest();
-            return Ok();
+            }
         }
 
 
@@ -100,12 +139,19 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<Director>>> Search(string director)
         {
-            var directors = _mapper.Map<List<Director>>(await _directorService.Search(director));
+            try
+            {
+                var directors = _mapper.Map<List<Director>>(await _directorService.Search(director));
+                if (directors == null || directors.Count == 0) return NotFound("Redatelj nije pronađen.");
 
-            if (directors == null || directors.Count == 0)
-                return NotFound("Redatelj nije pronađen.");
-
-            return Ok(directors);
+                _logger.LogInformation("Search directors succeded.");
+                return Ok(directors);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
         }
     }
 }

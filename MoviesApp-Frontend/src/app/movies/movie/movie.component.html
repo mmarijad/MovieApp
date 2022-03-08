@@ -1,0 +1,49 @@
+<div class="jumbtron">
+    <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
+      <h2 class="text-center text-secondary">Film</h2>
+      <input type="hidden" name="id" #id="ngModel" [(ngModel)]="formData.id">
+      <hr>
+      <div class="form-group">
+        <input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
+          [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}" placeholder="Naziv">
+        <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Molimo, unesite naziv filma.</div>
+      </div>
+      <div class="form-group">
+        <textarea name="description" #name="ngModel" [(ngModel)]="formData.description" class="form-control"
+          placeholder="Opis"
+          [ngClass]=""
+          required rows="4"></textarea>
+        <div class="invalid-feedback" *ngIf="">Molimo, unesite opis filma.
+        </div>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="categoryId" #categoryId [(ngModel)]="formData.categoryId" required>
+          <option value="null" disabled selected hidden>Kategorija</option>
+          <option *ngFor="let category of categories" value="{{category.id}}">
+            {{category.name}}
+          </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="categoryId.invalid && categoryId.touched">Molimo, odaberite kategoriju.</div>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="directorId" #directorId [(ngModel)]="formData.directorId" required>
+          <option value="null" disabled selected hidden>Redatelj</option>
+          <option *ngFor="let director of directors" value="{{director.id}}">
+            {{director.name}} {{director.lastName}}
+          </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="directorId.invalid && directorId.touched">Molimo, odaberite redatelja</div>
+      </div>
+      <div class="form-group">
+        <input name="year" #name="ngModel" [(ngModel)]="formData.year" class="form-control" required
+          [ngClass]="" placeholder="Godina">
+        <div class="invalid-feedback" *ngIf="">Molimo, unesite godinu objavljivanja filma.</div>
+      </div>
+      <hr>
+      <div class="form-group text-center">
+        <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Spremi</button>
+        <button class="btn btn-default" type="button" (click)="cancel()">Odustani</button>
+      </div>
+  
+    </form>
+  </div>

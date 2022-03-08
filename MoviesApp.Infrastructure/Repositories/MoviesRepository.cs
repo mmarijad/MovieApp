@@ -40,14 +40,14 @@ namespace MoviesApp.Infrastructure.Repositories
 
         public override async Task<List<Movie>> GetAll()
         {
-            return await Db.Movies.AsNoTracking().Include(b => b.Category)
+            return await Db.Movies.AsNoTracking().Include(b => b.Category).Include(b => b.Director)
                 .OrderBy(b => b.Name)
                 .ToListAsync();
         }
 
         public override async Task<Movie> GetById(int id)
         {
-            return await Db.Movies.AsNoTracking().Include(b => b.Category)
+            return await Db.Movies.AsNoTracking().Include(b => b.Category).Include(b => b.Director)
                 .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
         }
