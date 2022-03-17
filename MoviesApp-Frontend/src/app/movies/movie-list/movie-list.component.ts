@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Movie } from 'src/app/_models/Movie';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { MovieDetailsComponent } from 'src/app/movie-details/movie-details.component';
 
 const APIKEY = "faeb787d";
 
@@ -18,13 +17,13 @@ const APIKEY = "faeb787d";
 })
 
 export class MovieListComponent implements OnInit {
-  public movies: any;
-  public listComplet: any;
+  public movies: Movie[];
+  public listComplet: Movie[];
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
-  movieDetails: any;
-  name:string='';
-  apiResponse: any;
+  movieDetails: Object;
+  name: string = '';
+  apiResponse: Object;
   isSearching: boolean;
   isShowDiv: boolean;
 
@@ -38,6 +37,7 @@ export class MovieListComponent implements OnInit {
                 this.apiResponse = [];
                 this.movieDetails = [];
               }
+              
   ngOnInit() {
     this.getValues();
     this.searchValueChanged.pipe(debounceTime(1000))
@@ -85,8 +85,7 @@ export class MovieListComponent implements OnInit {
     this.movieDetailsService.getDetails(this.movieDetails);
     })
     }
-  
-
+    
   private search() {
     if (this.searchTerm !== '') {
       this.service.searchMoviesWithCategoryAndDirector(this.searchTerm).subscribe(movie => {

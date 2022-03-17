@@ -30,9 +30,11 @@ namespace MoviesApp.Infrastructure.Repositories
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
-
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName)
             };
-
+     
             var roles = await this.userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
@@ -44,7 +46,7 @@ namespace MoviesApp.Infrastructure.Repositories
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddMinutes(30),
                 SigningCredentials = creds
             };
 

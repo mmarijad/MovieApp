@@ -11,7 +11,7 @@ const APIKEY = "faeb787d";
 
 export class MovieDetailsComponent implements OnInit {
   
-    @Input() movieDetails: any;
+    @Input() movieDetails: Object;
     @Input() btnCancelText: string;
 
     constructor(private activeModal: NgbActiveModal){}

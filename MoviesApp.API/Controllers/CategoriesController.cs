@@ -70,7 +70,6 @@ namespace MoviesApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(CategoryAddDto categoryDto)
         {
-
             try
             {
                 if (!ModelState.IsValid) return BadRequest();

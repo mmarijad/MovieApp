@@ -28,13 +28,13 @@ namespace MoviesApp.Infrastructure.Repositories
         public async Task<IEnumerable<Movie>> SearchMoviesWithCategoryAndDirector(string searchedValue)
         {
             return await Db.Movies.AsNoTracking()
-               .Include(m => m.Category)
-               .Where(m => m.Name.Contains(searchedValue) ||
-                           m.Director.Name.Contains(searchedValue) ||
-                           m.Director.LastName.Contains(searchedValue) ||
-                           m.Description.Contains(searchedValue) ||
-                           m.Year.Contains(searchedValue) ||
-                           m.Category.Name.Contains(searchedValue))
+               .Include(m => m.Category).Include(m => m.Director)
+               .Where(m => m.Name.ToUpper().Contains(searchedValue.ToUpper()) ||
+                           m.Director.Name.ToUpper().Contains(searchedValue.ToUpper()) ||
+                           m.Director.LastName.ToUpper().Contains(searchedValue.ToUpper()) ||
+                           m.Description.ToUpper().Contains(searchedValue.ToUpper()) ||
+                           m.Year.ToUpper().Contains(searchedValue.ToUpper()) ||
+                           m.Category.Name.ToUpper().Contains(searchedValue.ToUpper()))
                .ToListAsync();
         }
 

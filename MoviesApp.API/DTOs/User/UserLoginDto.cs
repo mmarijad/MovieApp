@@ -8,10 +8,10 @@ namespace MoviesApp.API.DTOs.User
 {
     public class UserLoginDto
     {
-        [Required]
+        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

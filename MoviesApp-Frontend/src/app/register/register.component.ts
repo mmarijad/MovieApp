@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
       username: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      password:['', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+      password:['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     })
     this.registerForm.controls.password.valueChanges.subscribe(() => {
@@ -39,10 +39,9 @@ export class RegisterComponent implements OnInit {
 
   register(){
     this.userService.register(this.registerForm.value).subscribe(response => {
-      this.router.navigateByUrl('/movies');
+      this.router.navigateByUrl('/home');
     }, error => {
       this.validationErrors = error;
-      
     })
   }
 }

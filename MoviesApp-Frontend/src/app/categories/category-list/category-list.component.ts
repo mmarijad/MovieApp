@@ -4,6 +4,7 @@ import { CategoryService } from 'src/app/_services/category.service';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Category } from 'src/app/_models/Category';
 
 @Component({
   selector: 'app-category-list',
@@ -12,7 +13,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 
 export class CategoryListComponent implements OnInit{
-  public categories: any;
+  public categories: Category[];
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 

@@ -1,3 +1,4 @@
+.ngb-dp-months { display: none !important; }
 .form {
     margin: 0 auto !important;
     float: none !important;
@@ -5,3 +6,5 @@
 .jumbtron {
     padding-top: 60px;
 }
+
+:host ::ng-deep select:first-child{display:none;}

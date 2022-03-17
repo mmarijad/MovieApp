@@ -3,70 +3,81 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Director } from 'src/app/_models/Director';
 import { DirectorService } from 'src/app/_services/director.service';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-director',
   templateUrl: './director.component.html',
   styleUrls: ['./director.component.css']
-})
-export class DirectorComponent implements OnInit {
-  public formData: Director;
+}) 
 
-  constructor(public service: DirectorService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+export class DirectorComponent implements OnInit {
+  directorForm: FormGroup;
+  validationErrors: string[] = [];
+  public formData: Director;
+  isAddMode: boolean;
+  loading = false;
+  submitted = false;
+  id: number;
+
+  constructor(private service: DirectorService, private formBuilder: FormBuilder, 
+              private router: Router,  private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.resetForm();
 
-    let id;
-    this.route.params.subscribe(params => {
-      id = params['id'];
-    });
+    this.id = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id;
+    
+    this.directorForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      lastName: ['', Validators.required],
+      id: ['']
+  });
 
-    if (id != null) {
-      this.service.getDirectorById(id).subscribe(director => {
-        this.formData = director;
-      }, error => {
-      });
-    } else {
-      this.resetForm();
-    }
+  if (!this.isAddMode) {
+      this.service.getDirectorById(this.id)
+          .pipe(first())
+          .subscribe(x => this.directorForm.patchValue(x));
   }
+}
 
- private resetForm(form?: NgForm) {
+  onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.directorForm.invalid) {
+        return;
+    }
+
+    this.loading = true;
+    if (this.isAddMode) {
+        this.insertDirector();
+    } else {
+        this.updateDirector();
+    }
+}
+
+  private resetForm(form?: FormGroup) {
     if (form != null) {
-      form.form.reset();
-    }
-
-    this.formData = {
-      id: 0,
-      name: '',
-      lastname: ''
-    };
-  }
-
-  public onSubmit(form: NgForm) {
-    if (form.value.id === 0) {
-      this.insertDirector(form);
-    } else {
-      this.updateDirector(form);
+      form.reset();
     }
   }
-
-  public insertDirector(form: NgForm) {
-    this.service.addDirector(form.form.value).subscribe(() => {
-      this.resetForm(form);
-      this.router.navigate(['/directors']);
-    }, () => {
-    });
+  
+  insertDirector(){
+    this.service.addDirector(this.directorForm.value).subscribe(response => {
+      this.router.navigateByUrl('/directors');
+    }, error => {
+      this.validationErrors = error;
+    })
   }
 
-  public updateDirector(form: NgForm) {
-    this.service.updateDirector(form.form.value.id, form.form.value).subscribe(() => {
-      this.resetForm(form);
+ updateDirector() {
+    this.service.updateDirector(this.directorForm.value.id, this.directorForm.value).subscribe(() => {
+      this.resetForm(this.directorForm);
       this.router.navigate(['/directors']);
     }, () => {
+
     });
   }
 

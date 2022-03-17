@@ -20,7 +20,6 @@ export class JwtInterceptor implements HttpInterceptor {
     let currentUser: User;
     this.userService.currentUser$.pipe(take(1)).subscribe(user => currentUser = user);
 
-    //Checking for current user and only for urls that are pointed toward out API
     if(currentUser && this.isValidUrl(request.url.slice(0, this.baseUrl.length))){
       request = request.clone({
         setHeaders: {
@@ -28,7 +27,6 @@ export class JwtInterceptor implements HttpInterceptor {
         }
       })
     }
-    
     return next.handle(request);
   }
 }

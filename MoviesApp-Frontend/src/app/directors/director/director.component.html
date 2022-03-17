@@ -1,24 +1,15 @@
 <div class="jumbtron">
-    <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
+  <form [formGroup]='directorForm' (ngSubmit)="directorForm.valid && onSubmit()" autocomplete="off" class="col-md-5 form">
       <h2 class="text-center text-secondary">Redatelj</h2>
-      <input type="hidden" name="id" #id="ngModel" [(ngModel)]="formData.id">
       <hr>
-      <div class="form-group">
-        <input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
-          [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}"
-          placeholder="Ime redatelja">
-        <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Molimo, unesite ime direktora.</div>
-      </div>
-      <div class="form-group">
-        <input name="lastname" #name="ngModel" [(ngModel)]="formData.lastname" class="form-control" required
-          [ngClass]="{'is-invalid': form.controls['lastname']?.invalid && form.controls['lastname']?.touched}"
-          placeholder="Prezime redatelja">
-        <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Molimo, unesite prezime direktora.</div>
-      </div>
-      <hr>
+
+      <app-form-input type="hidden" [formControl]='directorForm.controls["id"]'></app-form-input>
+      <app-form-input [formControl]='directorForm.controls["name"]' [label]='"Ime direktora"'></app-form-input>
+      <app-form-input [formControl]='directorForm.controls["lastName"]' [label]='"Prezime direktora"'></app-form-input>
+
       <div class="form-group text-center">
-        <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Spremi</button>
-        <button class="btn btn-default" type="button" (click)="cancel()">Odustani</button>
+          <button [disabled]='!directorForm.valid' class="btn btn-success mr-2" type="submit">Spremi</button>
+          <button class="btn btn-default" type="button" (click)="cancel()">Odustani</button>
       </div>
-    </form>
-  </div>
+  </form>
+</div>

@@ -25,7 +25,7 @@ namespace MoviesApp.Infrastructure.Mappings
             // Jedan direktor ima više filmova
             builder.HasMany(c => c.Movies)
                 .WithOne(b => b.Director)
-                .HasForeignKey(b => b.CategoryId);
+                .HasForeignKey(b => b.DirectorId);
 
             builder.ToTable("Directors");
         }

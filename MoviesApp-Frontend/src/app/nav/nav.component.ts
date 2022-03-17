@@ -9,23 +9,16 @@ import { UserService } from '../_services/user.service';
 })
 export class NavComponent implements OnInit {
 
-  model: any={};
-  
   constructor(public userService: UserService, private router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   login() {
-    this.userService.login(this.model).subscribe(response => {
-        this.router.navigateByUrl('/movies');
-    }, error =>{
-      console.log(error);
-    });
+    this.router.navigateByUrl('login');
   }
 
   logout() {
     this.userService.logout();
-    this.router.navigateByUrl('register');
+    this.router.navigateByUrl('login');
   }
 }

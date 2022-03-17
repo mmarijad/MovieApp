@@ -149,6 +149,26 @@ namespace MoviesApp.API.Controllers
             }
         }
 
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Remove(int id)
+        {
+            try { 
+            var movie = await _moviesService.GetById(id);
+            if (movie == null) return NotFound();
+
+            await _moviesService.Remove(movie);
+
+            return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in MoviesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return NotFound();
+            }
+        }
+
         [HttpGet]
         [Route("search-movies-with-category-and-director/{searchedValue}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -10,14 +10,17 @@ import { DirectorListComponent } from './directors/director-list/director-list.c
 import { DirectorComponent } from './directors/director/director.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
 
   { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent},
   {
     path: '', runGuardsAndResolvers: 'always', canActivate: [AuthGuard],
     children: 
     [ 
+    { path: 'home', component: HomeComponent },
     { path: 'movies', component: MovieListComponent },
     { path: 'movie', component: MovieComponent },
     { path: 'movie/:id', component: MovieComponent },

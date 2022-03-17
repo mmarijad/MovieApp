@@ -4,6 +4,7 @@ import { DirectorService } from 'src/app/_services/director.service';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Director } from 'src/app/_models/Director';
 
 @Component({
   selector: 'app-director-list',
@@ -12,7 +13,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 
 export class DirectorListComponent implements OnInit{
-  public directors: any;
+  public directors: Director[] ;
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 

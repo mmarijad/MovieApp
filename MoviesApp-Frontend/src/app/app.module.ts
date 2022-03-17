@@ -25,6 +25,9 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MoviesDetailsService } from './_services/movies-details.service';
 import { RegisterComponent } from './register/register.component';
 import { FormComponent } from './form/form.component';
+import { LoginComponent } from './login/login.component';
+import { FormSelectComponent } from './form-select/form-select.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import { FormComponent } from './form/form.component';
     ConfirmationDialogComponent,
     MovieDetailsComponent,
     RegisterComponent,
-    FormComponent
+    FormComponent,
+    LoginComponent,
+    FormSelectComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import { FormComponent } from './form/form.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     MoviesService,
@@ -56,6 +62,7 @@ import { FormComponent } from './form/form.component';
     DirectorService,
     ConfirmationDialogService,
     MoviesDetailsService,
+
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],

@@ -14,5 +14,8 @@ namespace MoviesApp.API.DTOs.Movie
         public string DirectorLastName { get; set; }
         public string CategoryName { get; set; }
         public string DirectorName { get; set; }
+        public int CategoryId { get; set; }
+        public int DirectorId { get; set; }
+
     }
 }
