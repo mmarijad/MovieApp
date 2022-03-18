@@ -55,7 +55,7 @@ namespace MoviesApp.Domain.Services
 
         public async Task<IEnumerable<Director>> Search(string directorName)
         {
-            return await _directorRepository.Search(c => c.Name.Contains(directorName) || c.LastName.Contains(directorName));
+            return await _directorRepository.Search(c => c.Name.ToUpper().Contains(directorName.ToUpper()) || c.LastName.ToUpper().Contains(directorName.ToUpper()));
         }
 
         public async Task<Director> Update(Director director)

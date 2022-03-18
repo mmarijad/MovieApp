@@ -59,7 +59,7 @@ namespace MoviesApp.Domain.Services
 
         public async Task<IEnumerable<Category>> Search(string categoryName)
         {
-            return await _categoryRepository.Search(c => c.Name.Contains(categoryName));
+            return await _categoryRepository.Search(c => c.Name.ToUpper().Contains(categoryName.ToUpper()));
         }
 
         public void Dispose()
