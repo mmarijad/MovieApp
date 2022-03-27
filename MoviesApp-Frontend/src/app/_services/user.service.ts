@@ -23,7 +23,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  register(model: Object) {
+  register(model: User) {
     return this.http.post(this.baseUrl + 'Users/register', model).pipe(
       map((response: User) => {
         const user = response;
@@ -34,7 +34,7 @@ export class UserService {
     );
   }
 
-  login(model: Object) {
+  login(model: User) {
     return this.http.post(this.baseUrl + 'Users/login', model).pipe(
       map((response: User) => {
         const user = response;
