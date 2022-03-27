@@ -178,6 +178,52 @@ namespace MoviesApp.Infrastructure.Migrations
                     b.ToTable("Directors");
                 });
 
+            modelBuilder.Entity("MoviesApp.Domain.Models.List", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Lists");
+                });
+
+            modelBuilder.Entity("MoviesApp.Domain.Models.ListMovie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ListId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieLists");
+                });
+
             modelBuilder.Entity("MoviesApp.Domain.Models.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -203,6 +249,8 @@ namespace MoviesApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("DirectorId");
 
                     b.ToTable("Movie");
                 });
@@ -328,6 +376,26 @@ namespace MoviesApp.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MoviesApp.Domain.Models.List", b =>
+                {
+                    b.HasOne("MoviesApp.Domain.Models.User", "User")
+                        .WithMany("Lists")
+                        .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("MoviesApp.Domain.Models.ListMovie", b =>
+                {
+                    b.HasOne("MoviesApp.Domain.Models.List", "List")
+                        .WithMany("MovieLists")
+                        .HasForeignKey("ListId")
+                        .IsRequired();
+
+                    b.HasOne("MoviesApp.Domain.Models.Movie", "Movie")
+                        .WithMany("MovieLists")
+                        .HasForeignKey("MovieId")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MoviesApp.Domain.Models.Movie", b =>
                 {
                     b.HasOne("MoviesApp.Domain.Models.Category", "Category")
@@ -337,7 +405,7 @@ namespace MoviesApp.Infrastructure.Migrations
 
                     b.HasOne("MoviesApp.Domain.Models.Director", "Director")
                         .WithMany("Movies")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("DirectorId")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

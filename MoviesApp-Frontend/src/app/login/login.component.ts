@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
-import { User } from '../_models/User'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   validationErrors: string[] = [];
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private userService: UserService, private formBuilder: FormBuilder, 
+    private router: Router, private toastr: ToastrService) { 
+    }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit {
   initializeForm(){
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password:['', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+      password:['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
     })
   }
 
@@ -32,7 +34,10 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }, error => {
       this.validationErrors = error;
-      console.log(error);
-    })
+      console.log(error);                    
+      if (error.status === 400)  
+        {this.toastr.error('Pogrešno korisničko ime ili lozinka.');
+      }
+    });
   }
 }

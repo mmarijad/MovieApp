@@ -11,6 +11,9 @@ import { DirectorComponent } from './directors/director/director.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { ListsListsComponent } from './lists/lists-lists/lists-lists.component';
+import { ListsComponent } from './lists/lists/lists.component';
+import { ListDetailsComponent } from './lists/list-details/list-details.component';
 
 const routes: Routes = [
 
@@ -21,6 +24,7 @@ const routes: Routes = [
     children: 
     [ 
     { path: 'home', component: HomeComponent },
+    
     { path: 'movies', component: MovieListComponent },
     { path: 'movie', component: MovieComponent },
     { path: 'movie/:id', component: MovieComponent },
@@ -30,7 +34,11 @@ const routes: Routes = [
     { path: 'directors', component: DirectorListComponent },
     { path: 'director', component: DirectorComponent },
     { path: 'director/:id', component: DirectorComponent },
-    { path: '**', redirectTo: 'home', pathMatch: 'full' }
+    { path: 'lists/:username', component: ListsListsComponent },
+    { path: 'list', component: ListsComponent },
+    { path: 'list/:id', component: ListsComponent },
+    { path: 'list-details/:id', component: ListDetailsComponent},
+    { path: '**', redirectTo: 'home', pathMatch: 'full' },
    ]
   }
 ];

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { Director } from 'src/app/_models/Director';
 import { DirectorService } from 'src/app/_services/director.service';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-director',
@@ -22,7 +22,7 @@ export class DirectorComponent implements OnInit {
   id: number;
 
   constructor(private service: DirectorService, private formBuilder: FormBuilder, 
-              private router: Router,  private route: ActivatedRoute) { }
+              private router: Router,  private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -67,8 +67,10 @@ export class DirectorComponent implements OnInit {
   insertDirector(){
     this.service.addDirector(this.directorForm.value).subscribe(response => {
       this.router.navigateByUrl('/directors');
+      this.toastr.success('Uspješno ste dodali redatelja.');
     }, error => {
       this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri dodavanju redatelja.');
     })
   }
 
@@ -76,8 +78,10 @@ export class DirectorComponent implements OnInit {
     this.service.updateDirector(this.directorForm.value.id, this.directorForm.value).subscribe(() => {
       this.resetForm(this.directorForm);
       this.router.navigate(['/directors']);
-    }, () => {
-
+      this.toastr.success('Uspješno ste uredili redatelja.');
+    }, error => {
+      this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri uređivanju redatelja.');
     });
   }
 

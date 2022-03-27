@@ -27,6 +27,11 @@ namespace MoviesApp.Infrastructure.Mappings
             builder.Property(b => b.DirectorId)
                 .IsRequired();
 
+            builder.HasMany(c => c.MovieLists)
+                .WithOne(b => b.Movie)
+                .HasForeignKey(b => b.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.ToTable("Movie");
         }
     }

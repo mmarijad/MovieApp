@@ -66,5 +66,10 @@ namespace MoviesApp.Domain.Services
         {
             _categoryRepository?.Dispose();
         }
+
+        public async Task<Category> GetByName(string Name)
+        {
+            return await _categoryRepository.GetByName(Name);
+        }
     }
 }

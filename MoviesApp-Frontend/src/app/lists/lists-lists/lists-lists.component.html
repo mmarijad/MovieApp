@@ -1,0 +1,53 @@
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+    <h1 class="display-4 text-center"> 
+        Popisi filmova     
+    </h1>
+    <br>
+</div>
+  <hr/>
+  <br/>
+  <div class="col-md-12">
+  <br>
+  <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+            <button  *ngIf="lists?.length!==0;" type="button" class="btn btn-success btn-sm" id="rounded" (click)="addList()">➕</button>
+        </div>
+        <table *ngIf="lists?.length!==0; else elseTemplate" class="table table-condensed table-hover col-md-8">
+            <thead>
+                <tr>
+                <th>Naziv popisa</th>
+                <th>Opis</th>
+                <th>Opcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let list of lists">
+                <td>{{list.title}}</td>
+                <td>{{list.description}}</td>
+                <td class="action-button-column">
+                    <a title="Uredi" (click)="updateList(list.id)"> <i class="fas fa-edit"></i> </a>
+                    <a title="Obriši" (click)="deleteList(list.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
+                    <a title="Detalji" (click)="listDetails(list.id)" style="margin-left: 12px;"><i class="fas fa-info"></i></a>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+        <ng-template #elseTemplate>
+            <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-5"></div>
+              <h3 class="col-md-3">Niste još dodali popis filmova!</h3>
+            </div>
+            <div class="row">
+              <div class="col-md-6"></div>
+              <button type="button" class="btn btn-success btn-sm" id="rounded" (click)="addList()">➕</button></div>  
+          </div>      
+          </ng-template>
+        <div class="col-md-2"></div>
+    </div>
+  </div>
+</div>
+  

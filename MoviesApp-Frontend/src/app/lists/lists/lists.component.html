@@ -1,0 +1,21 @@
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+  <br>
+  <h2 class="display-4 text-center">{{listTitle}}</h2>
+  <br>
+</div>
+<div class="jumbtron">
+    <form [formGroup]='listForm' (ngSubmit)="listForm.valid && onSubmit()" autocomplete="off" class="col-md-5 form">
+        <hr>
+        <app-form-input type="hidden" [formControl]='listForm.controls["id"]'></app-form-input>
+        <app-form-input [formControl]='listForm.controls["title"]' [label]='"Naziv"'></app-form-input>
+        <app-form-input [formControl]='listForm.controls["description"]' [label]='"Opis"'></app-form-input>
+        <app-form-input type="hidden" [formControl]='listForm.controls["userId"]'></app-form-input>
+        <div class="form-group text-center">
+          <button [disabled]='!listForm.valid' class="btn btn-outline-success mr-2" type="submit">Spremi</button>
+          <button class="btn btn-outline-secondary mr-2" type="button" (click)="cancel()">Odustani</button>
+        </div> 
+      <hr>  
+    </form>
+  </div>
+  

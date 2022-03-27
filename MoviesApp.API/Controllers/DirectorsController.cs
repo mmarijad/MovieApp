@@ -28,7 +28,7 @@ namespace MoviesApp.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<DirectorResultDto>>> GetAll()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace MoviesApp.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<DirectorResultDto>> GetById(int id)
         {
             try
             {

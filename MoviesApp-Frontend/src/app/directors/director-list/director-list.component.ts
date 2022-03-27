@@ -5,6 +5,7 @@ import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Director } from 'src/app/_models/Director';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-director-list',
@@ -18,7 +19,7 @@ export class DirectorListComponent implements OnInit{
   public searchValueChanged: Subject<string> = new Subject<string>();
 
   constructor(private router: Router, private service: DirectorService,
-                private confirmationDialogService: ConfirmationDialogService) { }
+                private confirmationDialogService: ConfirmationDialogService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
       this.getDirectors();
@@ -59,8 +60,10 @@ export class DirectorListComponent implements OnInit{
       .then(() =>
         this.service.deleteDirector(directorId).subscribe(() => {
           this.getDirectors();
+          this.toastr.success('Uspješno ste izbrisali redatelja.');
         },
           error => {
+            this.toastr.error('Došlo je do pogreške pri brisanju redatelja.');
           }))
       .catch(() => '');
   }

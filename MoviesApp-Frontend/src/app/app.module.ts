@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { CategoryComponent } from './categories/category/category.component';
@@ -28,6 +29,9 @@ import { FormComponent } from './form/form.component';
 import { LoginComponent } from './login/login.component';
 import { FormSelectComponent } from './form-select/form-select.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ListsComponent } from './lists/lists/lists.component';
+import { ListsListsComponent } from './lists/lists-lists/lists-lists.component';
+import { ListDetailsComponent } from './lists/list-details/list-details.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +50,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormComponent,
     LoginComponent,
     FormSelectComponent,
+    ListsComponent,
+    ListsListsComponent,
+    ListDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +62,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({positionClass: 'toast-center-center'}),
   ],
   providers: [
     MoviesService,

@@ -1,14 +1,30 @@
-<div class="jumbtron">
-  <form [formGroup]='categoryForm' (ngSubmit)="categoryForm.valid && onSubmit()" autocomplete="off" class="col-md-5 form">
-      <h2 class="text-center text-secondary">Kategorija</h2>
-      <hr>
-
-      <app-form-input type="hidden" [formControl]='categoryForm.controls["id"]'></app-form-input>
-      <app-form-input [formControl]='categoryForm.controls["name"]' [label]='"Naziv kategorije"'></app-form-input>
-
-      <div class="form-group text-center">
-          <button [disabled]='!categoryForm.valid' class="btn btn-success mr-2" type="submit">Spremi</button>
-          <button class="btn btn-default" type="button" (click)="cancel()">Odustani</button>
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+  <h1 class="display-4 text-center"> 
+    Kategorija 
+  </h1>
+  <br>
+</div>  
+<div class="box" style="margin: 50px; position: relative; top: 5%; bottom: 10%;" >
+  <div class="container" style="text-align:center">
+    <div class ="row">
+      <div class="col-3" *ngFor="let movie of movies | async">
+        <div class="card" style="margin:5px;">
+          <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+          <div class="card-body">
+              <h1 class="card-title">{{movie.title}}</h1>
+              <button class="btn btn-outline-dark" id="rounded" (click)="getDetails(this.movie)"><i class="fas fa-info"></i></button>
+          </div>
+        </div>
       </div>
-  </form>
+      <hr>
+    </div>
+  </div>
+  <br><hr><br>
+  <div class="form-group text-center">
+    <button class="btn btn-outline-dark" id="rounded" (click)="previousPage()"><i class="fas fa-arrow-left"></i></button>
+    <button class="btn btn-outline-dark" id="rounded" (click)="nextPage()"><i class="fas fa-arrow-right"></i></button>
+  </div>
+  <hr>
+  <br>
 </div>

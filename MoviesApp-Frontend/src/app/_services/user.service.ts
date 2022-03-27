@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class UserService {
         const user = response;
         if (user) {
           this.setCurrentUser(user);
-        }
+        } 
       })
     );
   }
@@ -51,6 +51,11 @@ export class UserService {
     this.currentUserSource.next(user);
     this.jwtToken = localStorage.getItem("token");
     this.decodedToken = this.jwtHelper.decodeToken(this.jwtToken);
+ 
+    user.username = this.decodedToken.unique_name;
+    user.name = this.decodedToken.given_name;
+    user.lastname = this.decodedToken.family_name;
+    user.id = this.decodedToken.nameid;
   }
 
   logout() {

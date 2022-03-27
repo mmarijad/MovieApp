@@ -51,5 +51,19 @@ namespace MoviesApp.Infrastructure.Repositories
                 .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<Movie> GetByName(string Name)
+        {
+            return await Db.Movies.AsNoTracking().Include(m => m.Category).Include(m => m.Director)
+                .Where(m => m.Name.ToUpper() == Name.ToUpper()).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteMovie(Movie movie)
+        {
+            var movieToDelete = Db.Movies.Where(m => m.Id == movie.Id).Include(m => m.MovieLists).FirstOrDefault();
+            Db.Movies.Remove(movieToDelete);
+            Db.SaveChanges();
+            return true;
+        }
     }
 }

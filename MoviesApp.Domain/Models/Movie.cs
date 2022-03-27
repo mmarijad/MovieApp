@@ -12,9 +12,12 @@ namespace MoviesApp.Domain.Models
 
         public int DirectorId { get; set; }
         public int CategoryId { get; set; }
+  
 
         /* EF Relation */
         public Category Category { get; set; }
         public Director Director { get; set; }
+
+        public IEnumerable<ListMovie> MovieLists { get; set; }
     }
 }

@@ -52,9 +52,14 @@ namespace MoviesApp.Domain.Services
             return await _moviesRepository.GetMoviesByDirector(directorId);
         }
 
+        public async Task<Movie> GetByName(string Name)
+        {
+            return await _moviesRepository.GetByName(Name);
+        }
+
         public async Task<bool> Remove(Movie movie)
         {
-            await _moviesRepository.Remove(movie);
+            await _moviesRepository.DeleteMovie(movie);
             return true;
         }
 

@@ -1,17 +1,55 @@
-<div class="title-home container mt-5 text-center">
-	<h1>Dobrodošli u Movies!</h1>
-	<p class="lead">Platforma za pretraživanje filmova</p>
-	<div class="text-center">
-		<button class="btn btn-primary btn-lg" [routerLink]="['/movies']">Pogledajte filmove</button>
+<div id="headerWrapper"> </div>
+<div id="bg-text">
+	<div class="title-home container mt-5 text-center" style="background-image:'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-movies-1614634680.jpg';">
+		<h1 style="font-size:300%;">Dobrodošli u Movies!</h1>
+		<p style="font-size:150%;" class="lead">Platforma za pretraživanje filmova</p>
+		<br>
+		<div class="text-center">
+			<button class="btn btn-outline-light btn-lg" [routerLink]="['/lists/username']">Pogledajte popise</button>
+		</div>
+		<br>
+		<hr>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="col-md-1"></div>
+								<div class="input-group-text bg-white" id="rounded">
+									<i class="fas fa-search"></i>
+								</div>
+							</div>
+							<input class="col-md-10" id="rounded" type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchMovies()"/>
+						</div>
+						<br>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<br>
-	<hr>
-	<h1>Sada popularno</h1>
-	<br>
-	<div class="container mt-3">
-		<div class="row movies">
-
+</div>
+<hr>
+<div class="box" style="margin: 50px; position: relative; top: 5%; bottom: 10%;" >
+	<div class="container" style="text-align:center">
+	  <div class ="row">
+		  <div class="col-3" *ngFor="let movie of movies | async">
+			  <div class="card" style="margin:5px;">
+	  			<img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+					<div class="card-body">
+		  				<h1 class="card-title">{{movie.title}}</h1>
+						  <button class="btn btn-dark" id="rounded" (click)="getDetails(this.movie)"><i class="fas fa-info"></i></button>
+					</div>
+				</div>
+			</div>
+			<hr>
 		</div>
+	</div>
+	<br><hr><br>
+	<div class="form-group text-center">
+	  <button class="btn btn-outline-dark" id="rounded" (click)="previousPage()"><i class="fas fa-arrow-left"></i></button>
+	  <button class="btn btn-outline-dark" id="rounded" (click)="nextPage()"><i class="fas fa-arrow-right"></i></button>
 	</div>
 	<hr>
 	<br>

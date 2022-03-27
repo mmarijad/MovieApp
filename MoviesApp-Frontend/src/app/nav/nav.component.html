@@ -1,10 +1,11 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: rgba(0,0,0, 0.6)">
     <a class="navbar-brand" [routerLink]="['/home']">The Movies</a>
   
     <ul class="navbar-nav mr-auto">
       <a *ngIf="(userService.currentUser$ | async) !== null" class="nav-link" [routerLink]="['/movies']">Filmovi</a>
       <a *ngIf="(userService.currentUser$ | async) !== null" class="nav-link" [routerLink]="['/categories']">Kategorije</a>
       <a *ngIf="(userService.currentUser$ | async) !== null" class="nav-link" [routerLink]="['/directors']">Redatelji</a>
+      <a *ngIf="(userService.currentUser$ | async) !== null" class="nav-link" [routerLink]="['/lists/'+userService.decodedToken?.unique_name]">Popisi</a>
       
       <li *ngIf="(userService.currentUser$ | async) === null" class="nav-item">
         <a class="nav-link" routerLink='/register' routerLinkActive='active'>Registracija</a>
