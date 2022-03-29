@@ -8,6 +8,7 @@ import { CategoryListComponent } from './categories/category-list/category-list.
 import { CategoryComponent } from './categories/category/category.component';
 import { DirectorListComponent } from './directors/director-list/director-list.component';
 import { DirectorComponent } from './directors/director/director.component';
+import { DirectorDetailsComponent } from './directors/director-details/director-details.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoginComponent } from './login/login.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: 'directors', component: DirectorListComponent },
     { path: 'director', component: DirectorComponent },
     { path: 'director/:id', component: DirectorComponent },
+    { path: 'director-details/:id', component: DirectorDetailsComponent },
     { path: 'lists/:username', component: ListsListsComponent },
     { path: 'list', component: ListsComponent },
     { path: 'list/:id', component: ListsComponent },

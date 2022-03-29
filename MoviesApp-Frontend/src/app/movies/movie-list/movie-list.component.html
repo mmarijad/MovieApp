@@ -36,6 +36,7 @@
                 <th>Naziv filma</th>
                 <th>Opis</th>
                 <th>Godina</th>
+                <th>Redatelj</th>
                 <th>Opcije</th>
             </tr>
             </thead>
@@ -44,6 +45,7 @@
                 <td>{{movie.name}}</td>
                 <td>{{movie.description.length > 40 ? (movie.description | slice : 0:40) + '...' : movie.description}}</td>
                 <td>{{movie.year}}</td>
+                <td>{{movie.directorName}}</td>
                 <td class="action-button-column">
                      <a title="Pogledaj detalje" (click)="getDetails(this.movie)" style="margin-left: 12px;"><i class="fas fa-info"></i></a>
                 </td>

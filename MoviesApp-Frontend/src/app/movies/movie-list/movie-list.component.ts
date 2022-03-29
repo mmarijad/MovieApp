@@ -12,7 +12,6 @@ import { TmdbService } from 'src/app/_services/tmdb.service';
 import { MovieTmdb } from 'src/app/_models/MovieTmdb';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MovieOmdb } from 'src/app/_models/MovieOmdb';
 
 const APIKEY = environment.omdbApi;
 
@@ -38,8 +37,6 @@ export class MovieListComponent implements OnInit {
               private service: MoviesService,
               private confirmationDialogService: ConfirmationDialogService,
               private movieDetailsService: MoviesDetailsService,
-              private tmdbService: TmdbService,
-              private httpClient: HttpClient,
               private toastr: ToastrService) {
                 this.isSearching = false;
                 this.apiResponse = [];
@@ -93,10 +90,7 @@ public goToHome(){
   public getDetails(movie: Movie){
     this.name = movie.name;
     this.isShowDiv = false;
-    this.httpClient.get(`http://www.omdbapi.com/?t=${this.name}&apikey=${APIKEY}`).pipe(
-      map((data: MovieOmdb) => {return data as MovieOmdb})).subscribe(data => { 
-          this.movieDetailsService.getDetails(data);
-      });
+    this.movieDetailsService.getDetailsFromApi(this.name);
     } 
     
   private search() {

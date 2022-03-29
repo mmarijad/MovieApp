@@ -132,6 +132,26 @@ namespace MoviesApp.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-directors-by-name/{Name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<DirectorResultDto>> GetByName(string name)
+        {
+            try
+            {
+                var director = await _directorService.GetByName(name);
+                if (director == null) return NotFound();
+                _logger.LogInformation("Get director by name: {0} succeded.", name);
+                return Ok(_mapper.Map<DirectorResultDto>(director));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return BadRequest();
+            }
+        }
+
 
         [HttpGet]
         [Route("search/{director}")]

@@ -68,13 +68,13 @@ namespace MoviesApp.API.Controllers
         [Route("get-movies-by-name/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MovieResultDto>> GetByName(string Name)
+        public async Task<ActionResult<MovieResultDto>> GetByName(string name)
         {
             try
             {
-                var movie = await _moviesService.GetByName(Name);
+                var movie = await _moviesService.GetByName(name);
                 if (movie == null) return NotFound();
-                _logger.LogInformation("Get movie by name: {0} succeded.", Name);
+                _logger.LogInformation("Get movie by name: {0} succeded.", name);
                 return Ok(_mapper.Map<MovieResultDto>(movie));
             }
             catch (Exception ex)

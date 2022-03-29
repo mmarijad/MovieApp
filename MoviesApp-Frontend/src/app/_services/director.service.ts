@@ -35,4 +35,9 @@ export class DirectorService{
     public searchDirectors(name: string){
         return this.http.get<Director[]>(`${this.baseUrl}directors/search/${name}`);
     }
+
+    public getDirectorByName(name:string): Observable<Director> {
+        return this.http.get<Director>(this.baseUrl + 'directors/get-directors-by-name/' + name);
+    }
+
 }

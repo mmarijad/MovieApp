@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { async } from '@angular/core/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 import { MovieOmdb } from '../_models/MovieOmdb';
-import { MovieTmdb } from '../_models/MovieTmdb';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+const APIKEY = environment.omdbApi;
 
 @Injectable()
 
 export class MoviesDetailsService {
-
-    constructor(private modalService: NgbModal) {}
+    isShowDiv: boolean;
+    constructor(private modalService: NgbModal,
+        private httpClient: HttpClient) {}
 
     public getDetails(
         movieDetails: MovieOmdb,
@@ -25,4 +27,13 @@ export class MoviesDetailsService {
         modalRef.componentInstance.Title = title;
         return modalRef.result;
     }
+
+    public getDetailsFromApi(movieName: string){
+        this.isShowDiv = false;
+        this.httpClient.get(`http://www.omdbapi.com/?t=${movieName}&apikey=${APIKEY}`).pipe(
+          map((data: MovieOmdb) => {return data as MovieOmdb})).subscribe(data => { 
+              this.getDetails(data);
+          });
+        } 
+
 }

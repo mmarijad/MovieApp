@@ -48,18 +48,6 @@ export class CategoryListComponent implements OnInit{
     });
   }
 
-  private searchh() {
-    if (this.searchTerm !== '') {
-      this.service.searchCategories(this.searchTerm).subscribe(category => {
-        this.categories = category;
-      }, error => {
-        this.categories = [];
-      });
-    } else {
-      this.service.getCategories().subscribe(categories => this.categories = categories);
-    }
-  }
-
   public addCategory() {
     this.router.navigate(['/category']);
   }

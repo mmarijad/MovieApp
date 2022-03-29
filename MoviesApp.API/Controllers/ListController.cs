@@ -15,7 +15,7 @@ namespace MoviesApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ListController : ControllerBase
+    public class ListController : MainController
     {
         private readonly IListService _listService;
         private readonly IMapper _mapper;

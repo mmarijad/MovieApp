@@ -137,13 +137,13 @@ namespace MoviesApp.API.Controllers
         [Route("get-category-by-name/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CategoryResultDto>> GetByName(string Name)
+        public async Task<ActionResult<CategoryResultDto>> GetByName(string name)
         {
             try
             {
-                var category = await _categoryService.GetByName(Name);
+                var category = await _categoryService.GetByName(name);
                 if (category == null) return NotFound();
-                _logger.LogInformation("Get category by name: {0} succeded.", Name);
+                _logger.LogInformation("Get category by name: {0} succeded.", name);
                 return Ok(_mapper.Map<CategoryResultDto>(category));
             }
             catch (Exception ex)

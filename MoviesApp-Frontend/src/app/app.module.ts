@@ -32,6 +32,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListsComponent } from './lists/lists/lists.component';
 import { ListsListsComponent } from './lists/lists-lists/lists-lists.component';
 import { ListDetailsComponent } from './lists/list-details/list-details.component';
+import { DirectorDetailsComponent } from './directors/director-details/director-details.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ListDetailsComponent } from './lists/list-details/list-details.componen
     ListsComponent,
     ListsListsComponent,
     ListDetailsComponent,
+    DirectorDetailsComponent,
   ],
   imports: [
     BrowserModule,

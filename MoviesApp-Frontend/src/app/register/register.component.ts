@@ -19,8 +19,11 @@ export class RegisterComponent implements OnInit {
   list: List = new List();
   jwtHelper = new JwtHelperService();
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, 
-    private router: Router, private toastr: ToastrService, private listService: ListService) { }
+  constructor(  private userService: UserService, 
+                private formBuilder: FormBuilder, 
+                private router: Router, 
+                private toastr: ToastrService, 
+                private listService: ListService) { }
 
   ngOnInit(): void {
     this.listForm = this.formBuilder.group({

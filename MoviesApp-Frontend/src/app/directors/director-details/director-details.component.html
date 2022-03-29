@@ -1,0 +1,42 @@
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+  <br>
+    <h2 class="display-4 text-center">{{directorName}}</h2>
+    <hr>
+</div>
+<br>
+<br>
+<div class="col-md-12">
+  <div class="row">
+      <div class="col-md-2">
+      </div>
+      <table *ngIf="movies?.length!==0; else elseTemplate" class="table table-condensed table-hover col-md-8">
+          <thead>
+              <tr>
+              <th>Naziv filma</th>
+              <th>Opis</th>
+              <th>Opcije</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movie of movies">
+              <td>{{movie.name}}</td>
+              <td>{{movie.description}}</td>
+              <td class="action-button-column">
+                  <a title="Detalji" (click)="getDetails(movie.name)" style="margin-left: 12px;"><i class="fas fa-info"></i></a>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <ng-template #elseTemplate>
+        <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-5"></div>
+          <h3 class="col-md-3">Nema filmova za pregled!</h3>
+        </div>
+      </div>      
+      </ng-template>
+    <div class="col-md-2"></div>
+  </div>
+  <br><hr><br>
+</div>

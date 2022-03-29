@@ -22,7 +22,9 @@ namespace MoviesApp.Infrastructure.Repositories
 
         public async Task<IEnumerable<Movie>> GetMoviesByDirector(int directorId)
         {
-            return await Search(m => m.DirectorId == directorId);
+            return await Db.Movies.AsNoTracking().Include(b => b.Director).Include(b => b.Category)
+                .Where(b => b.DirectorId == directorId)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Movie>> SearchMoviesWithCategoryAndDirector(string searchedValue)
@@ -52,10 +54,10 @@ namespace MoviesApp.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Movie> GetByName(string Name)
+        public async Task<Movie> GetByName(string name)
         {
             return await Db.Movies.AsNoTracking().Include(m => m.Category).Include(m => m.Director)
-                .Where(m => m.Name.ToUpper() == Name.ToUpper()).FirstOrDefaultAsync();
+                .Where(m => m.Name.ToUpper() == name.ToUpper()).FirstOrDefaultAsync();
         }
 
         public async Task<bool> DeleteMovie(Movie movie)

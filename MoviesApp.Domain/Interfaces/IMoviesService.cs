@@ -15,7 +15,7 @@ namespace MoviesApp.Domain.Interfaces
         Task<bool> Remove(Movie movie);
         Task<IEnumerable<Movie>> GetMoviesByCategory(int categoryId);
         Task<IEnumerable<Movie>> GetMoviesByDirector(int directorId);
-        Task<Movie> GetByName(string Name);
+        Task<Movie> GetByName(string name);
         Task<IEnumerable<Movie>> Search(string movieName);
         Task<IEnumerable<Movie>> SearchMoviesWithCategoryAndDirector(string searchedValue);
     }

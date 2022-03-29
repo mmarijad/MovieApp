@@ -37,9 +37,6 @@
                     <th class="col-md-4">
                         Ime
                     </th>
-                    <th class="col-md-4">
-                        Prezime
-                    </th>
                     <th class="col-md-2">
                         Opcije
                     </th>
@@ -50,15 +47,15 @@
                         <td>
                             {{director.name}}
                         </td>
-                        <td>
-                            {{director.lastName}}
-                        </td>
                         <td class="action-button-column">
                             <a title="Uredi" (click)="updateDirector(director.id)">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a title="Obriši" (click)="deleteDirector(director.id)" style="margin-left: 12px">
                                 <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a title="Detalji" (click)="directorDetails(director.id)" style="margin-left: 12px;">
+                                <i class="fas fa-info"></i>
                             </a>
                         </td>
                     </tr>
@@ -70,10 +67,7 @@
               <div class="col-md-5"></div>
               <h3 class="col-md-2 text-center">Nema redatelja za pregled!</h3>
             </div>
-            <div class="row">
-                <div class="col-md-6"></div>
-                <button type="button" class="btn btn-success btn-sm" id="rounded" (click)="addDirector()">➕</button></div>  
-            </div>       
+            </div>   
           </ng-template>
         <div class="col-md-2"></div>
     </div>

@@ -18,7 +18,7 @@ namespace MoviesApp.Infrastructure.Repositories
         {
             return await Db.MovieLists.AsNoTracking().Include(b => b.List).Include(b => b.Movie)
                 .Where(b => b.ListId == listId)
-               .ToListAsync();
+                .ToListAsync();
         }
 
         public Task<ListMovie> GetByIds(int movieId, int listId)

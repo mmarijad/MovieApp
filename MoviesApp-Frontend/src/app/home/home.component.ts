@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MovieTmdb } from '../_models/MovieTmdb';
 import { TmdbService } from '../_services/tmdb.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { MoviesDetailsService} from '../_services/movies-details.service';
 import { UserService } from '../_services/user.service';
-import { map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment';
 import { MovieOmdb } from '../_models/MovieOmdb';
 const APIKEY = environment.omdbApi;
@@ -32,13 +29,10 @@ export class HomeComponent implements OnInit {
   movieDetails: MovieOmdb;
   username: string;
   currentPage: number;
-  private url = 'https://api.themoviedb.org/3/movie/';
-  private searchUrl = 'https://api.themoviedb.org/3/search/movie';
-  private language = 'en';
 
-
-  constructor(private router: Router, private tmdbService: TmdbService, private userService: UserService,
-    private movieDetailsService: MoviesDetailsService, private http: HttpClient) {}
+  constructor(  private tmdbService: TmdbService, 
+                private userService: UserService,
+                private movieDetailsService: MoviesDetailsService) {}
 
   ngOnInit(): void {
     this.getMovies();
@@ -80,12 +74,8 @@ export class HomeComponent implements OnInit {
       }
     }
 
-  public getDetails(movie: MovieTmdb){
-    this.name = movie.title;
-    this.isShowDiv = false;
-    this.http.get(`http://www.omdbapi.com/?t=${this.name}&apikey=${APIKEY}`).pipe(
-      map((data: MovieOmdb) => {return data as MovieOmdb})).subscribe(data => { 
-          this.movieDetailsService.getDetails(data);
-      });
+    public getDetails(movie: MovieTmdb){
+      this.name = movie.title;
+      this.movieDetailsService.getDetailsFromApi(this.name);
     } 
 }

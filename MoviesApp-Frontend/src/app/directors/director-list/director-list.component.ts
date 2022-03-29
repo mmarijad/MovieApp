@@ -18,8 +18,10 @@ export class DirectorListComponent implements OnInit{
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 
-  constructor(private router: Router, private service: DirectorService,
-                private confirmationDialogService: ConfirmationDialogService, private toastr: ToastrService) { }
+  constructor(  private router: Router, 
+                private service: DirectorService,
+                private confirmationDialogService: ConfirmationDialogService, 
+                private toastr: ToastrService) { }
 
   ngOnInit(): void {
       this.getDirectors();
@@ -53,6 +55,10 @@ export class DirectorListComponent implements OnInit{
 
   public updateDirector(directorId: number) {
     this.router.navigate(['/director/' + directorId]);
+  }
+
+  public directorDetails(directorId: number){
+    this.router.navigate(['/director-details/' + directorId]);
   }
   
   public deleteDirector(directorId: number){

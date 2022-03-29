@@ -40,4 +40,8 @@ export class MoviesService {
     public searchMoviesWithCategoryAndDirector(searchedValue: string): Observable<Movie[]> {
         return this.http.get<Movie[]>(`${this.baseUrl}movies/search-movies-with-category-and-director/${searchedValue}`);
     }
+
+    public getMoviesByDirector(directorId: number): Observable<Movie[]> {
+        return this.http.get<Movie[]>(this.baseUrl + 'movies/get-movies-by-director/' + directorId);
+    }
 }

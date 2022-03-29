@@ -24,7 +24,8 @@ namespace MoviesApp.API.Controllers
         private readonly ILogger<UsersController> _logger;
  
 
-    public UsersController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService, ILogger<UsersController> logger)
+    public UsersController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, 
+        IUserService userService, ILogger<UsersController> logger)
         {
             this.mapper = mapper;
             this.userManager = userManager;

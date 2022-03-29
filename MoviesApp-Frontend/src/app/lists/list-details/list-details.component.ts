@@ -8,12 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { MoviesDetailsService } from 'src/app/_services/movies-details.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
-import { first, map } from 'rxjs/operators';
+import { first} from 'rxjs/operators';
 import { MovieOmdb } from 'src/app/_models/MovieOmdb';
-import { environment } from 'src/environments/environment';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
-const APIKEY = environment.omdbApi;
 
 @Component({
   selector: 'app-list-details',
@@ -45,13 +43,13 @@ export class ListDetailsComponent implements OnInit {
 
   getValues(){
     this.listId = this.route.snapshot.params['id'];
-      this.listService.getListById(this.listId)
-          .pipe(first())
-          .subscribe(x => {
-            this.listTitle = x.title;
-            this.listTitle = x.title;
-            this.list = x;
-        });
+    this.listService.getListById(this.listId)
+        .pipe(first())
+        .subscribe(x => {
+          this.listTitle = x.title;
+          this.listTitle = x.title;
+          this.list = x;
+    });
             
     this.movieListService.getMovieLists(this.listId).subscribe(movies => {
       this.movies = movies;
@@ -60,11 +58,7 @@ export class ListDetailsComponent implements OnInit {
 
   public getDetails(movieName: string){
     this.name = movieName;
-    this.isShowDiv = false;
-    this.http.get(`http://www.omdbapi.com/?t=${this.name}&apikey=${APIKEY}`).pipe(
-      map((data: MovieOmdb) => {return data as MovieOmdb})).subscribe(data => { 
-          this.movieDetailsService.getDetails(data);
-      });
+    this.movieDetailsService.getDetailsFromApi(this.name);
     } 
 
   public delete(id: number) {

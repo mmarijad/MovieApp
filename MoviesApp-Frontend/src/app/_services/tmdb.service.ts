@@ -26,12 +26,6 @@ export class TmdbService {
          ); 
       }
 
-      public getDetails(movie : string): Observable<MovieTmdb> {
-        let detailsUrl = `${this.searchUrl}?api_key=${API_KEY}&language=${this.language}&query=${movie}`;
-    
-        return this.http.get(detailsUrl).pipe(map((res) => res['results']));
-      }
-
       searchMovies(query: string, page: number) {
         let searchUrl = `${this.searchUrl}?api_key=${API_KEY}&language=${this.language}&query=${query}&page=${page}`;
     

@@ -8,6 +8,6 @@ namespace MoviesApp.Domain.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        Task<Category> GetByName(string Name);
+        Task<Category> GetByName(string name);
     }
 }

@@ -4,7 +4,7 @@ import { List } from 'src/app/_models/List';
 import { ListService } from 'src/app/_services/list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/_services/user.service';
 
@@ -29,7 +29,7 @@ export class ListsComponent implements OnInit {
 
   constructor(private service: ListService, private formBuilder: FormBuilder, 
               private router: Router,  private route: ActivatedRoute, 
-              private toastr: ToastrService, private userService: UserService) { }
+              private toastr: ToastrService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.username = this.userService.decodedToken?.unique_name;
@@ -52,49 +52,51 @@ export class ListsComponent implements OnInit {
           this.listTitle = x.title;
       });    
     }
-}
-onSubmit() {
-  this.submitted = true;
-  if (this.listForm.invalid) {
-      return;
   }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.listForm.invalid) {
+        return;
+    }
 
   this.loading = true;
   if (this.isAddMode) {
       this.insertList();
-  } else {
+    } 
+  else {
       this.updateList();
+    }
   }
-}
 
-private resetForm(form?: FormGroup) {
-  if (form != null) {
-    form.reset();
+  private resetForm(form?: FormGroup) {
+      if (form != null) {
+        form.reset();
+      }
+    }
+
+  insertList(){
+    this.service.addList(this.listForm.value, this.username).subscribe(response => {
+      this.router.navigateByUrl('/lists/'+ this.username);
+      this.toastr.success('Uspješno ste dodali popis filmova.');
+    }, error => {
+      this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri dodavanju popisa filmova.');
+    })
   }
-}
 
-insertList(){
-  this.service.addList(this.listForm.value, this.username).subscribe(response => {
-    this.router.navigateByUrl('/lists/'+ this.username);
-    this.toastr.success('Uspješno ste dodali popis filmova.');
-  }, error => {
-    this.validationErrors = error;
-    this.toastr.error('Došlo je do pogreške pri dodavanju popisa filmova.');
-  })
-}
+  updateList() {
+    this.service.updateList(this.listForm.value.id, this.listForm.value).subscribe(() => {
+      this.resetForm(this.listForm);
+      this.router.navigate(['/lists/'+this.username]);
+      this.toastr.success('Uspješno ste uredili popis filmova.');
+    },  error => {
+      this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri uređivanju popisa filmova.');
+    });
+  }
 
-updateList() {
-  this.service.updateList(this.listForm.value.id, this.listForm.value).subscribe(() => {
-    this.resetForm(this.listForm);
+  public cancel() {
     this.router.navigate(['/lists/'+this.username]);
-    this.toastr.success('Uspješno ste uredili popis filmova.');
-  },  error => {
-    this.validationErrors = error;
-    this.toastr.error('Došlo je do pogreške pri uređivanju popisa filmova.');
-  });
-}
-
-public cancel() {
-  this.router.navigate(['/lists/'+this.username]);
-}
+  }
 }

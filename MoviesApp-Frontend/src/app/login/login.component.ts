@@ -14,9 +14,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   validationErrors: string[] = [];
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, 
-    private router: Router, private toastr: ToastrService) { 
-    }
+  constructor(  private userService: UserService, 
+                private formBuilder: FormBuilder, 
+                private router: Router, 
+                private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.initializeForm();

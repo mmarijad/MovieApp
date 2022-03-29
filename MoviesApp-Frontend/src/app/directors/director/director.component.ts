@@ -45,7 +45,6 @@ export class DirectorComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.directorForm.invalid) {
         return;
     }

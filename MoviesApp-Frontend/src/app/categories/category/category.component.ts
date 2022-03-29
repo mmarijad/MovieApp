@@ -8,7 +8,6 @@ import { debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MoviesDetailsService} from '../../_services/movies-details.service';
 import { UserService } from '../../_services/user.service';
-import { map } from 'rxjs/operators'
 import { environment } from 'src/environments/environment';
 import { MovieOmdb } from '../../_models/MovieOmdb';
 const APIKEY = environment.omdbApi;
@@ -85,10 +84,6 @@ export class CategoryComponent implements OnInit {
 
   public getDetails(movie: MovieTmdb){
     this.name = movie.title;
-    this.isShowDiv = false;
-    this.http.get(`http://www.omdbapi.com/?t=${this.name}&apikey=${APIKEY}`).pipe(
-      map((data: MovieOmdb) => {return data as MovieOmdb})).subscribe(data => { 
-          this.movieDetailsService.getDetails(data);
-      });
+    this.movieDetailsService.getDetailsFromApi(this.name);
     } 
 }

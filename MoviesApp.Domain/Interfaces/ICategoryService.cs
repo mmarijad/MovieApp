@@ -14,6 +14,6 @@ namespace MoviesApp.Domain.Interfaces
         Task<Category> Update(Category category);
         Task<bool> Remove(Category category);
         Task<IEnumerable<Category>> Search(string categoryName);
-        Task<Category> GetByName(string Name);
+        Task<Category> GetByName(string name);
     }
 }

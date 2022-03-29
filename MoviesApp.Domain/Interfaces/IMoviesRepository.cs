@@ -12,7 +12,7 @@ namespace MoviesApp.Domain.Interfaces
         new Task<Movie> GetById(int id);
         Task<IEnumerable<Movie>> GetMoviesByCategory(int categoryId);
         Task<IEnumerable<Movie>> GetMoviesByDirector(int directorId);
-        Task<Movie> GetByName(string Name);
+        Task<Movie> GetByName(string name);
         Task<IEnumerable<Movie>> SearchMoviesWithCategoryAndDirector(string searchedValue);
         Task<bool> DeleteMovie(Movie movie);
     }

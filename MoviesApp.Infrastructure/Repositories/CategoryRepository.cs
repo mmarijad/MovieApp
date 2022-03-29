@@ -14,9 +14,9 @@ namespace MoviesApp.Infrastructure.Repositories
     {
         public CategoryRepository(MoviesDatabaseContext context) : base(context) { }
 
-        public async Task<Category> GetByName(string Name)
+        public async Task<Category> GetByName(string name)
         {
-            return await Db.Categories.AsNoTracking().Where(c => c.Name.ToUpper() == Name.ToUpper()).FirstOrDefaultAsync();
+            return await Db.Categories.AsNoTracking().Where(c => c.Name.ToUpper() == name.ToUpper()).FirstOrDefaultAsync();
         }
     }
 }
