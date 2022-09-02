@@ -1,0 +1,29 @@
+<div class="jumbtron">
+  <form [formGroup]='movieForm' (ngSubmit)="movieForm.valid && onSubmit()" autocomplete="off" class="col-md-5 form">
+      <h2 class="text-center text-secondary"> Film </h2>
+      <hr>
+
+      <app-form-input type="hidden" [formControl]='movieForm.controls["id"]'></app-form-input>
+      <app-form-input [formControl]='movieForm.controls["name"]' [label]='"Naziv"'></app-form-input>
+      <app-form-input [formControl]='movieForm.controls["description"]' [label]='"Opis"'></app-form-input>
+   
+      <app-form-select #directorId [formControl]='movieForm.controls["directorId"]' 
+        [label]='"Redatelj"' [options]="directors">
+      </app-form-select>
+
+      <app-form-select #categoryId [formControl]='movieForm.controls["categoryId"]' 
+        [label]='"Kategorija"' [options]="categories" > 
+      </app-form-select>
+  
+      <ngb-datepicker #dp="ngbDatepicker" [(ngModel)]="model" [ngModelOptions]="{standalone: true}" 
+        (navigate)="date = $event.next" [startDate]="model" [showWeekdays]="false">
+      </ngb-datepicker>
+
+      <hr>
+      <div class="form-group text-center">
+        <button [disabled]='!movieForm.valid' class="btn btn-success mr-2" type="submit">Spremi</button>
+        <button class="btn btn-secondary mr-2" type="button" (click)="cancel()">Odustani</button>
+      </div>
+      
+  </form>
+</div>

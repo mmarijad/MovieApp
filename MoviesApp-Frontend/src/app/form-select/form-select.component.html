@@ -1,0 +1,10 @@
+<div class="form-group">
+    <select [compareWith]="compareFn" [class.is-invalid]="ngControl.touched && ngControl.invalid" class="form-control"
+        [formControl]="ngControl.control">
+        <option value="null" disabled selected>{{label}}</option>
+        <option *ngFor="let option of options" value="{{option.id}}" >
+          {{option.name}} {{option.lastName}}
+        </option>
+    </select>
+    <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">Polje {{label}} ne može biti prazno.</div>
+</div>

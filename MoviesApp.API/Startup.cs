@@ -10,6 +10,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoviesApp.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using MoviesApp.API.Configuration;
+using Microsoft.OpenApi.Models;
+using Microsoft.Net.Http.Headers;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.IO;
+using System.Reflection;
+using MoviesApp.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MoviesApp.API
 {
@@ -23,9 +36,44 @@ namespace MoviesApp.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MoviesDatabaseContext>(options =>
+            {
+                options.UseSqlite(@"DataSource = C:\Temp\Movies_Db");
+            });
+
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MoviesDatabaseContext>();
+            services.AddAutoMapper(typeof(Startup));
+            services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuer = true,
+                      ValidateAudience = true,
+                      ValidateLifetime = true,
+                      ValidateIssuerSigningKey = true,
+                      ValidIssuer = Configuration["Jwt:Issuer"],
+                      ValidAudience = Configuration["Jwt:Issuer"],
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                  };
+              });
+
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Title = "MoviesApp API",
+                    Version = "v1"
+                });
+            });
+            services.AddCors();
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,13 +83,16 @@ namespace MoviesApp.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCors(options =>options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

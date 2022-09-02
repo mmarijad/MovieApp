@@ -1,0 +1,61 @@
+<div class="jumbtron">
+    <h1 class="display-4 text-center"> 
+        Redatelji   
+    </h1>
+</div>
+<hr/>
+<br/>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-white">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchDirectors()"/>
+                </div>
+            </div>
+         </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="addDirector()">➕</button>
+        </div>
+    </div>
+<hr>
+<br>         
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-4">
+                    Ime
+                </th>
+                <th class="col-md-4">
+                    Prezime
+                </th>
+                <th class="col-md-2">
+                    Opcije
+                </th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr *ngFor="let director of directors">
+                    <td>
+                        {{director.name}}
+                    </td>
+                    <td>
+                        {{director.lastName}}
+                    </td>
+                    <td class="action-button-column">
+                        <a title="Uredi" (click)="updateDirector(director.id)">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a title="Obriši" (click)="deleteDirector(director.id)" style="margin-left: 12px">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+    </table> 
+</div>

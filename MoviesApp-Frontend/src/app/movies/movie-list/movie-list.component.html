@@ -1,0 +1,54 @@
+<div class="jumbtron">
+  <h1 class="display-4 text-center"> 
+      Filmovi     
+  </h1>
+</div>
+<hr/>
+<br/>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-white">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchMovies()"/>
+                </div>
+            </div>
+         </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="addMovie()">➕</button>
+        </div>
+    </div>
+<hr>
+<br>    
+    <table class="table table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+            <th>Naziv filma</th>
+            <th>Opis</th>
+            <th>Kategorija</th>
+            <th>Redatelj</th>
+            <th>Godina</th>
+            <th>Opcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movie of movies">
+            <td>{{movie.name}}</td>
+            <td>{{movie.description}}</td>
+            <td>{{movie.categoryName}}</td>
+            <td>{{movie.directorName}} {{movie.directorLastName}}</td>
+            <td>{{movie.year}}</td>
+            <td class="action-button-column">
+                <a title="Uredi" (click)="updateMovie(movie.id)"><i class="fas fa-edit"></i> </a>
+                <a title="Obriši" (click)="deleteMovie(movie.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
+                <a title="Detalji" (click)="getDetails(this.movie)" style="margin-left: 12px;"><i class="fas fa-info"></i></a>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>

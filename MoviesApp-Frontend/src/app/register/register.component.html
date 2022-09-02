@@ -1,0 +1,16 @@
+<div class="jumbtron">
+    <form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && register()" autocomplete="off" class="col-md-5 form">
+        <h2 class="text-center text-primary">Registracija</h2>
+        <hr>
+        
+        <app-form-input [formControl]='registerForm.controls["username"]' [label]='"Korisničko ime"'></app-form-input>
+        <app-form-input [formControl]='registerForm.controls["firstName"]' [label]='"Ime"'></app-form-input>
+        <app-form-input [formControl]='registerForm.controls["lastName"]' [label]='"Prezime"'></app-form-input>
+        <app-form-input [formControl]='registerForm.controls["password"]' [label]='"Lozinka"' [type]='"password"'></app-form-input>
+        <app-form-input [formControl]='registerForm.controls["confirmPassword"]' [label]='"Potvrdite lozinku"' [type]='"password"'></app-form-input>
+
+        <div class="form-group text-center">
+            <button [disabled]='!registerForm.valid' class="btn btn-success mr-2" type="submit">Registriraj me</button>
+        </div>
+    </form>
+</div>
