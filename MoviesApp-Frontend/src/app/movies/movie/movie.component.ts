@@ -9,6 +9,7 @@ import { DirectorService } from 'src/app/_services/director.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-movie',
@@ -31,10 +32,10 @@ export class MovieComponent implements OnInit {
 
   constructor(private service: MoviesService,  private categoryService: CategoryService,
               private directorService: DirectorService, private formBuilder: FormBuilder, 
-              private router: Router,  private route: ActivatedRoute, private calendar: NgbCalendar) { }
+              private router: Router,  private route: ActivatedRoute, 
+              private calendar: NgbCalendar, private toastr: ToastrService) { }
 
   ngOnInit() {
-
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
     
@@ -104,8 +105,10 @@ onSubmit() {
   insertMovie(){
     this.service.addMovie(this.movieForm.value).subscribe(response => {
       this.router.navigateByUrl('/movies');
+      this.toastr.success('Uspješno ste dodali film.');
     }, error => {
       this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri dodavanju filma.');
     })
   }
 
@@ -113,8 +116,10 @@ onSubmit() {
     this.service.updateMovie(this.movieForm.value.id, this.movieForm.value).subscribe(() => {
       this.resetForm(this.movieForm);
       this.router.navigate(['/movies']);
-    }, () => {
-
+      this.toastr.success('Uspješno ste uredili film.');
+    },  error => {
+      this.validationErrors = error;
+      this.toastr.error('Došlo je do pogreške pri uređivanju filma.');
     });
   }
 

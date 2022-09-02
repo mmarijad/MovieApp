@@ -8,10 +8,8 @@ namespace MoviesApp.API.DTOs.Movie
 {
     public class MovieUpdateDto
     {
-        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]

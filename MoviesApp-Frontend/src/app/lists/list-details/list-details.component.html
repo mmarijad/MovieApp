@@ -1,0 +1,46 @@
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+  <br>
+    <h2 class="display-4 text-center">{{listTitle}}</h2>
+    <hr>
+</div>
+<br>
+<br>
+<div class="col-md-12">
+  <div class="row">
+      <div class="col-md-2">
+      </div>
+      <table *ngIf="movies?.length!==0; else elseTemplate" class="table table-condensed table-hover col-md-8">
+          <thead>
+              <tr>
+              <th>Naziv filma</th>
+              <th>Opis</th>
+              <th>Opcije</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movie of movies">
+              <td>{{movie.movieName}}</td>
+              <td>{{movie.movieDescription}}</td>
+              <td class="action-button-column">
+                  <a title="Obriši" (click)="delete(movie.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
+                  <a title="Detalji" (click)="getDetails(movie.movieName)" style="margin-left: 12px;"><i class="fas fa-info"></i></a>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <ng-template #elseTemplate>
+        <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-5"></div>
+          <h3 class="col-md-3">Niste još dodali filmove na ovaj popis!</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-6"></div>
+          <button type="button" class="btn btn-success btn-sm" id="rounded" (click)="goToHome()">➕</button></div>  
+      </div>      
+      </ng-template>
+    <div class="col-md-2"></div>
+  </div>
+  <br><hr><br>
+</div>

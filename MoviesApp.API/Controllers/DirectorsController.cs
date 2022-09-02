@@ -28,7 +28,7 @@ namespace MoviesApp.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<DirectorResultDto>>> GetAll()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace MoviesApp.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<DirectorResultDto>> GetById(int id)
         {
             try
             {
@@ -129,6 +129,26 @@ namespace MoviesApp.API.Controllers
             {
                 _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
                 return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("get-directors-by-name/{Name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<DirectorResultDto>> GetByName(string name)
+        {
+            try
+            {
+                var director = await _directorService.GetByName(name);
+                if (director == null) return NotFound();
+                _logger.LogInformation("Get director by name: {0} succeded.", name);
+                return Ok(_mapper.Map<DirectorResultDto>(director));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DirectorsController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return BadRequest();
             }
         }
 

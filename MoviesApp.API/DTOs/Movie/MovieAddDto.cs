@@ -8,10 +8,9 @@ namespace MoviesApp.API.DTOs.Movie
 {
     public class MovieAddDto
     {
-        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
+   
         public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
         public int DirectorId { get; set; }
 
         [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]

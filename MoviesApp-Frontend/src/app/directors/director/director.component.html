@@ -1,15 +1,19 @@
+<div id="headerWrapperSmall"></div>
+<div class="jumbtron" id="bg-text">
+  <h2 class="text-center">Redatelj</h2>
+  <br>
+</div>
 <div class="jumbtron">
   <form [formGroup]='directorForm' (ngSubmit)="directorForm.valid && onSubmit()" autocomplete="off" class="col-md-5 form">
-      <h2 class="text-center text-secondary">Redatelj</h2>
-      <hr>
-
+    <hr>
       <app-form-input type="hidden" [formControl]='directorForm.controls["id"]'></app-form-input>
-      <app-form-input [formControl]='directorForm.controls["name"]' [label]='"Ime direktora"'></app-form-input>
-      <app-form-input [formControl]='directorForm.controls["lastName"]' [label]='"Prezime direktora"'></app-form-input>
-
+      <app-form-input [formControl]='directorForm.controls["name"]' [label]='"Ime"'></app-form-input>
+      <app-form-input [formControl]='directorForm.controls["lastName"]' [label]='"Prezime"'></app-form-input>
+      <br>
       <div class="form-group text-center">
-          <button [disabled]='!directorForm.valid' class="btn btn-success mr-2" type="submit">Spremi</button>
-          <button class="btn btn-default" type="button" (click)="cancel()">Odustani</button>
+          <button [disabled]='!directorForm.valid' class="btn btn-outline-success mr-2" type="submit">Spremi</button>
+          <button class="btn btn-outline-secondary" type="button" (click)="cancel()">Odustani</button>
       </div>
+      <hr>
   </form>
 </div>

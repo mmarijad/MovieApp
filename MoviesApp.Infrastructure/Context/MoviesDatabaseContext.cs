@@ -15,6 +15,8 @@ namespace MoviesApp.Infrastructure.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Director> Directors { get; set; }
+        public DbSet<List> Lists { get; set; }
+        public DbSet<ListMovie> MovieLists { get; set; }
         public override DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,9 +27,6 @@ namespace MoviesApp.Infrastructure.Context
                 property.SetColumnType("varchar(150)");
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MoviesDatabaseContext).Assembly);
-
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             base.OnModelCreating(modelBuilder);
         }

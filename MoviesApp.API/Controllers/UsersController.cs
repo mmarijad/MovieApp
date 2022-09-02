@@ -24,7 +24,8 @@ namespace MoviesApp.API.Controllers
         private readonly ILogger<UsersController> _logger;
  
 
-    public UsersController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService, ILogger<UsersController> logger)
+    public UsersController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, 
+        IUserService userService, ILogger<UsersController> logger)
         {
             this.mapper = mapper;
             this.userManager = userManager;
@@ -59,7 +60,7 @@ namespace MoviesApp.API.Controllers
         [HttpPost("login")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        public async Task<ActionResult<UserLoginDto>> Login(UserLoginDto userLoginDto)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace MoviesApp.API.Controllers
 
                 if (user != null && await this.userManager.CheckPasswordAsync(user, userLoginDto.Password))
                 {
-                    return Ok((new { Token = _userService.CreateToken(user) }));
+                    return Ok((new { Token = _userService.CreateToken(user)}));
                 }
                 else
                 {

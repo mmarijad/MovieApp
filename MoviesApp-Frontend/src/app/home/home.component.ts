@@ -1,26 +1,81 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from "jquery";
+import { Observable } from 'rxjs';
+import { MovieTmdb } from '../_models/MovieTmdb';
+import { TmdbService } from '../_services/tmdb.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { MoviesDetailsService} from '../_services/movies-details.service';
+import { UserService } from '../_services/user.service';
+import { environment } from 'src/environments/environment';
+import { MovieOmdb } from '../_models/MovieOmdb';
+const APIKEY = environment.omdbApi;
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  movies: Observable<MovieTmdb[]>;
+  public tmdbMovies: MovieTmdb[];
+  public searchTerm: string;
+  public searchValueChanged: Subject<string> = new Subject<string>();
+  name: string = '';
+  apiResponse: Object;
+  isSearching: boolean;
+  isShowDiv: boolean;
+  movieDetails: MovieOmdb;
+  username: string;
+  currentPage: number;
+
+  constructor(  private tmdbService: TmdbService, 
+                private userService: UserService,
+                private movieDetailsService: MoviesDetailsService) {}
 
   ngOnInit(): void {
-    var api_key = "8f8f136e15a5f493451e82f334d5de84"; 
-		var api_url = "https://api.themoviedb.org/3/movie/popular?api_key=" + api_key;
-		$.getJSON( api_url, function( data ) {
-
-			$.each( data.results, function( i, item ) {
-				var posterFullUrl = "https://image.tmdb.org/t/p/w185//" + item.poster_path;
-				$("<div class='col-3 mb-1'><img src='" + posterFullUrl + "'><h5>" + item.title + "</h5></div>").appendTo(".movies");
-			});
-		});
-
+    this.getMovies();
+    this.username = this.userService.decodedToken?.unique_name;
+    this.currentPage = 1;
+    this.searchValueChanged.pipe(debounceTime(1000))
+    .subscribe(() => {
+      this.search();
+    });
   }
 
+    getMovies() {
+      this.movies = this.tmdbService.getMovies();
+    }
+
+    public nextPage(){
+      if (this.currentPage!==499){
+        this.currentPage = this.currentPage+1;
+        this.searchMovies();
+      }
+    }
+
+    public previousPage(){
+      if (this.currentPage!==1){
+        this.currentPage = this.currentPage-1;
+        this.searchMovies();
+      }
+    }
+
+    public searchMovies() {
+      this.searchValueChanged.next();
+    }
+
+    private search() {
+      if (this.searchTerm !== '') {
+       this.movies = this.tmdbService.searchMovies(this.searchTerm, this.currentPage);
+      } else {
+        this.movies = this.tmdbService.getMovies();
+      }
+    }
+
+    public getDetails(movie: MovieTmdb){
+      this.name = movie.title;
+      this.movieDetailsService.getDetailsFromApi(this.name);
+    } 
 }

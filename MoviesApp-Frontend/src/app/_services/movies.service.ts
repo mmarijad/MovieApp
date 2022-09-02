@@ -29,11 +29,19 @@ export class MoviesService {
         return this.http.delete(this.baseUrl + 'movies/' + id);
     }
 
-    public getMovieById(id): Observable<Movie> {
+    public getMovieById(id: number): Observable<Movie> {
         return this.http.get<Movie>(this.baseUrl + 'movies/' + id);
+    }
+
+    public getMovieByName(name:string): Observable<Movie> {
+        return this.http.get<Movie>(this.baseUrl + 'movies/get-movies-by-name/' + name);
     }
 
     public searchMoviesWithCategoryAndDirector(searchedValue: string): Observable<Movie[]> {
         return this.http.get<Movie[]>(`${this.baseUrl}movies/search-movies-with-category-and-director/${searchedValue}`);
+    }
+
+    public getMoviesByDirector(directorId: number): Observable<Movie[]> {
+        return this.http.get<Movie[]>(this.baseUrl + 'movies/get-movies-by-director/' + directorId);
     }
 }

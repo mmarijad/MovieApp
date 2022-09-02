@@ -28,7 +28,7 @@ namespace MoviesApp.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<CategoryResultDto>>> GetAll()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace MoviesApp.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<CategoryResultDto>> GetById(int id)
         {
             try
             {
@@ -130,6 +130,26 @@ namespace MoviesApp.API.Controllers
             {
                 _logger.LogError(ex, "Error in CategoriesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
                 return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("get-category-by-name/{Name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CategoryResultDto>> GetByName(string name)
+        {
+            try
+            {
+                var category = await _categoryService.GetByName(name);
+                if (category == null) return NotFound();
+                _logger.LogInformation("Get category by name: {0} succeded.", name);
+                return Ok(_mapper.Map<CategoryResultDto>(category));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CategoryController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return BadRequest();
             }
         }
 

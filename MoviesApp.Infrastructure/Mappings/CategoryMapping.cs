@@ -21,7 +21,8 @@ namespace MoviesApp.Infrastructure.Mappings
             // Jedna kategorija ima više filmova
             builder.HasMany(c => c.Movies)
                 .WithOne(b => b.Category)
-                .HasForeignKey(b => b.CategoryId);
+                .HasForeignKey(b => b.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Category");
         }

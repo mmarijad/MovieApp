@@ -3,8 +3,8 @@
         [formControl]="ngControl.control">
         <option value="null" disabled selected>{{label}}</option>
         <option *ngFor="let option of options" value="{{option.id}}" >
-          {{option.name}} {{option.lastName}}
+          {{option.title}} {{option.name}} {{option.lastName}} 
         </option>
-    </select>
+      </select>
     <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">Polje {{label}} ne može biti prazno.</div>
 </div>

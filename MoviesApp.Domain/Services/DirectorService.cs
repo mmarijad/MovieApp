@@ -66,5 +66,10 @@ namespace MoviesApp.Domain.Services
             await _directorRepository.Update(director);
             return director;
         }
+
+        public async Task<Director> GetByName(string name)
+        {
+            return await _directorRepository.GetByName(name);
+        }
     }
 }

@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220321133710_AddMovieLists.cs" />
+    <Compile Remove="Migrations\20220321133710_AddMovieLists.Designer.cs" />
+    <Compile Remove="Migrations\20220321134509_AddMovieLists.cs" />
+    <Compile Remove="Migrations\20220321134509_AddMovieLists.Designer.cs" />
+    <Compile Remove="Migrations\20220321135301_AddMovieLists.cs" />
+    <Compile Remove="Migrations\20220321135301_AddMovieLists.Designer.cs" />
+    <Compile Remove="Migrations\20220321135453_AddMovieLists.cs" />
+    <Compile Remove="Migrations\20220321135453_AddMovieLists.Designer.cs" />
+    <Compile Remove="Migrations\20220321140237_AddMovieLists.cs" />
+    <Compile Remove="Migrations\20220321140237_AddMovieLists.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />

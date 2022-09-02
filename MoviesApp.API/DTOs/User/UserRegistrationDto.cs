@@ -21,9 +21,9 @@ namespace MoviesApp.API.DTOs.User
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Polje {0} ne može biti prazno.")]
-        [StringLength(50, ErrorMessage = "Polje {0} mora sadržavati minimalno {2}, a maksimalno {1} znakova.", MinimumLength = 6)]
+        [StringLength(50, ErrorMessage = "Polje {0} mora sadržavati minimalno {2}, a maksimalno {1} znakova.", MinimumLength = 8)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", 
-            ErrorMessage = "Lozinka mora sadržavati najmanje jedno veliko slovo, jedno malo slovo, jednu znamenku i jedan poseban znak.")]
+            ErrorMessage = "Lozinka mora sadržavati najmanje 8 znakova od čega najmanje jedno veliko slovo, jedno malo slovo, jednu znamenku i jedan poseban znak.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

@@ -23,18 +23,18 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  register(model: Object) {
+  register(model: User) {
     return this.http.post(this.baseUrl + 'Users/register', model).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
           this.setCurrentUser(user);
-        }
+        } 
       })
     );
   }
 
-  login(model: Object) {
+  login(model: User) {
     return this.http.post(this.baseUrl + 'Users/login', model).pipe(
       map((response: User) => {
         const user = response;
@@ -51,6 +51,11 @@ export class UserService {
     this.currentUserSource.next(user);
     this.jwtToken = localStorage.getItem("token");
     this.decodedToken = this.jwtHelper.decodeToken(this.jwtToken);
+ 
+    user.username = this.decodedToken.unique_name;
+    user.name = this.decodedToken.given_name;
+    user.lastname = this.decodedToken.family_name;
+    user.id = this.decodedToken.nameid;
   }
 
   logout() {

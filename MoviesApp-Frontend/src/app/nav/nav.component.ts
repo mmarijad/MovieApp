@@ -8,7 +8,7 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-
+  
   constructor(public userService: UserService, private router: Router) { }
 
   ngOnInit(): void {}

@@ -4,11 +4,16 @@ import { MoviesService } from 'src/app/_services/movies.service';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { MoviesDetailsService } from 'src/app/_services/movies-details.service';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Movie } from 'src/app/_models/Movie';
 import { HttpClient, HttpParams } from "@angular/common/http";
+import { ToastrService } from 'ngx-toastr';
+import { TmdbService } from 'src/app/_services/tmdb.service';
+import { MovieTmdb } from 'src/app/_models/MovieTmdb';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-const APIKEY = "faeb787d";
+const APIKEY = environment.omdbApi;
 
 @Component({
   selector: 'app-movie-list',
@@ -20,6 +25,7 @@ export class MovieListComponent implements OnInit {
   public movies: Movie[];
   public listComplet: Movie[];
   public searchTerm: string;
+  public tmdbMovies: Observable<MovieTmdb[]>;
   public searchValueChanged: Subject<string> = new Subject<string>();
   movieDetails: Object;
   name: string = '';
@@ -31,8 +37,7 @@ export class MovieListComponent implements OnInit {
               private service: MoviesService,
               private confirmationDialogService: ConfirmationDialogService,
               private movieDetailsService: MoviesDetailsService,
-              private elementRef: ElementRef,
-              private httpClient: HttpClient) {
+              private toastr: ToastrService) {
                 this.isSearching = false;
                 this.apiResponse = [];
                 this.movieDetails = [];
@@ -66,8 +71,10 @@ export class MovieListComponent implements OnInit {
       .then(() =>
         this.service.deleteMovie(movieId).subscribe(() => {
           this.getValues();
+          this.toastr.success('Uspješno ste izbrisali film.');
         },
-          err => {
+          error => {
+            this.toastr.error('Došlo je do pogreške pri brisanju filma.');
           }))
       .catch(() => '');
   }
@@ -76,15 +83,15 @@ export class MovieListComponent implements OnInit {
     this.searchValueChanged.next();
   }
 
+public goToHome(){
+  this.router.navigate(['/home']);
+}
+
   public getDetails(movie: Movie){
-    this.name= movie.name;
+    this.name = movie.name;
     this.isShowDiv = false;
-    this.httpClient.get(`http://www.omdbapi.com/?t=${movie.name}&apikey=${APIKEY}`)
-    .subscribe(data=> {
-    this.movieDetails=data;
-    this.movieDetailsService.getDetails(this.movieDetails);
-    })
-    }
+    this.movieDetailsService.getDetailsFromApi(this.name);
+    } 
     
   private search() {
     if (this.searchTerm !== '') {

@@ -14,5 +14,6 @@ namespace MoviesApp.Domain.Interfaces
         Task<Director> Update(Director director);
         Task<bool> Remove(Director director);
         Task<IEnumerable<Director>> Search(string directorName);
+        Task<Director> GetByName(string name);
     }
 }

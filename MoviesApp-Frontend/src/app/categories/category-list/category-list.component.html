@@ -1,7 +1,9 @@
-<div class="jumbtron">
+<div id="headerWrapperSmall"> </div>
+<div class="jumbtron" id="bg-text">
     <h1 class="display-4 text-center"> 
         Kategorije    
     </h1>
+    <br>
 </div>  
 <hr/>
 <br/>
@@ -11,44 +13,56 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <div class="input-group-text bg-white">
+                        <div class="input-group-text bg-white" id="rounded">
                             <i class="fas fa-search"></i>
                         </div>
                     </div>
-                    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchCategories()"/>
+                    <input id="rounded" type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchCategories()"/>
                 </div>
             </div>
         </div>
-        <div class="col-md-1">
-            <button type="button" class="btn btn-secondary btn-sm" (click)="addCategory()">➕</button>
-        </div>
     </div>
 <hr>
-<br>   
-    <table class="table table-bordered table-condensed table-hover">
-        <thead>
-            <tr>
-                <th class="col-md-6">
-                    Kategorija
-                </th>
-                <th class="col-md-6">
-                    Opcije
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let category of categories">
-                <td>
-                    {{category.name}}
-                </td>
-                <td class="action-button-column">
-                    <a title="Uredi" (click)="updateCategory(category.id)">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a title="Obriši" (click)="deleteCategory(category.id)" style="margin-left:12px">                            <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>    
+<br>
+<br>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <br>
+        <table *ngIf="genres?.length!==0; else elseTemplate"  class="table table-condensed table-hover col-md-6">
+            <thead>
+                <tr>
+                    <th class="col-md-10">
+                        Kategorija
+                    </th>
+                    <th class="col-md-2">
+                        Opcije
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let genre of genres">
+                    <td>
+                        {{genre['name']}}
+                    </td>
+                    <td class="action-button-column">
+                        <a title="Pogledaj filmove iz ove kategorije" (click)="updateCategory(genre.id)">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ng-template #elseTemplate>
+            <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-5"></div>
+              <h3 class="col-md-2 text-center">Nema kategorija za pregled!</h3>
+              </div>
+            </div>     
+          </ng-template>
+        <div class="col-md-2"></div>
+    </div>
+    <br><hr><br>
 </div>

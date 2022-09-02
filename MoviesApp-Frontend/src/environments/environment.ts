@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:44333/'
+  baseUrl: 'https://localhost:44333/',
+  tmdbApi: "8f8f136e15a5f493451e82f334d5de84",
+  omdbApi: "faeb787d"
 };
 
 /*

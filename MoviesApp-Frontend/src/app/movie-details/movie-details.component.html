@@ -6,19 +6,31 @@
 </div>
 <div class="modal-body"> 
   <div class="card" style="width: fit-content;">
-    <img class="card-img-top" text-center src="{{movieDetails['Poster']}}" style="height:50%; width:50%; display:block; margin-left:auto; margin-right:auto;">
+    <img class="card-img-top" text-center src="{{movieDetails.Poster}}" style="height:50%; width:50%; display:block; margin-left:auto; margin-right:auto;">
       <div class="card-body">
-        <h1  text-center class="card-title">{{movieDetails['Title']}}</h1>
-        <p class="card-text">Godina: {{movieDetails['Year']}}</p>
-        <p class="card-text">Osvojene nagrade: {{movieDetails['Awards']}}</p>
-        <p class="card-text">Glumci: {{movieDetails['Actors']}}</p>
-        <p class="card-text">Produkcija: {{movieDetails['Production']}}</p>
-        <p class="card-text">Zemlja: {{movieDetails['Country']}}</p>
-        <p class="card-text">Jezik: {{movieDetails['Language']}}</p>
-        <p class="card-text">Radnja: {{movieDetails['Plot']}}</p>
+        <h1  text-center class="card-title">{{movieDetails.Title}}</h1>
+        <p class="card-text">Kategorija: {{movieDetails.Genre}}</p>
+        <p class="card-text">Osvojene nagrade: {{movieDetails.Awards}}</p>
+        <p class="card-text">Glumci: {{movieDetails.Actors}}</p>
+        <p class="card-text">Zemlja: {{movieDetails.Country}}</p>
+        <p class="card-text">Jezik: {{movieDetails.Language}}</p>
+        <p class="card-text">Radnja: {{movieDetails.Plot}}</p>
       </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-dark" (click)="dismiss()">{{btnCancelText}}</button>
+  <div class="col-md-12">
+		<div class="row">
+			
+      <form [formGroup]='movieListForm' (ngSubmit)="movieListForm.valid && onSubmit()" autocomplete="off" class="col-md-6 form">  
+        <app-form-select [formControl]='movieListForm.controls["listId"]' 
+                [label]='"Popis"' [options]="lists">
+        </app-form-select>
+        <div class="form-group text-center">
+          <button [disabled]='!movieListForm.valid' title="Dodaj na popis" type="submit"  class="btn btn-outline-dark" id="rounded"><i class="fas fa-plus" aria-hidden="true"></i></button> 
+          <button type="button" title="Zatvori" class="btn btn-outline-dark" id="rounded" (click)="dismiss()"><i class="fas fa-times" aria-hidden="true"></i></button>
+        </div>
+        </form>
+    </div>
+  </div>
 </div>

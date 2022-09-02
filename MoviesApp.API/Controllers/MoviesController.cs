@@ -28,7 +28,7 @@ namespace MoviesApp.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<MovieResultDto>>> GetAll()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace MoviesApp.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<MovieResultDto>> GetById(int id)
         {
             try
             {
@@ -65,10 +65,30 @@ namespace MoviesApp.API.Controllers
         }
 
         [HttpGet]
+        [Route("get-movies-by-name/{Name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MovieResultDto>> GetByName(string name)
+        {
+            try
+            {
+                var movie = await _moviesService.GetByName(name);
+                if (movie == null) return NotFound();
+                _logger.LogInformation("Get movie by name: {0} succeded.", name);
+                return Ok(_mapper.Map<MovieResultDto>(movie));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in MoviesController, error message: {0}, HResult: {1}", ex.Message, ex.HResult);
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
         [Route("get-movies-by-category/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetMoviesByCategory(int categoryId)
+        public async Task<ActionResult<IEnumerable<MovieResultDto>>> GetMoviesByCategory(int categoryId)
         {
             try
             {
@@ -89,7 +109,7 @@ namespace MoviesApp.API.Controllers
         [Route("get-movies-by-director/{directorId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetMoviesByDirector(int directorId)
+        public async Task<ActionResult<IEnumerable<MovieResultDto>>> GetMoviesByDirector(int directorId)
         {
             try
             {
