@@ -97,6 +97,7 @@ export class MovieDetailsComponent implements OnInit {
             },
             error =>{
               if (error.status === 404){
+                console.clear();
                 this.directorService.addDirector(this.directorForm.value).subscribe(
                   response =>{
                     this.movieForm.value.directorId = response['id'];
@@ -123,6 +124,7 @@ export class MovieDetailsComponent implements OnInit {
       error => {
         if (error.status === 404)
         {
+          console.clear();
           this.movieService.addMovie(this.movieForm.value).subscribe(response => {
             response = response;
             this.movieListForm.value.movieId = response['id'];
